@@ -583,7 +583,13 @@
   <!-- Floating Cursor Preview (Hidden by default) -->
   <div id="project-preview-container" class="fixed pointer-events-none z-[100] opacity-0 transition-opacity duration-300 flex items-center justify-center top-0 left-0" style="will-change: transform;">
     <div id="project-preview-card" class="glass-card border border-primary/30 rounded-2xl overflow-hidden shadow-[0_0_40px_rgba(123,97,255,0.4)] relative" style="width: 380px; aspect-ratio: 16/9; transform-style: preserve-3d; will-change: transform;">
-      <video id="project-preview-video" src="" autoplay loop muted playsinline class="w-full h-full object-cover"></video>
+      <div id="project-preview-loader" class="absolute inset-0 flex items-center justify-center text-primary opacity-0 transition-opacity duration-300 z-10 bg-[#0a0a0f]">
+        <svg class="animate-spin h-8 w-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+      </div>
+      <video id="project-preview-video" src="" autoplay loop muted playsinline class="w-full h-full object-cover transition-opacity duration-300 opacity-0 relative z-20"></video>
     </div>
   </div>
 
