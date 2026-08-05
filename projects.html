@@ -627,18 +627,22 @@
       // ── Video preload cache ──────────────────────────────────────────
       const videoCache = {};
 
-      function preloadAllVideos() {
-        triggers.forEach(trigger => {
-          const src = trigger.getAttribute('data-video');
-          if (!src || videoCache[src]) return;
-          const v = document.createElement('video');
-          v.muted = true;
-          v.preload = 'auto';
-          v.src = src;
-          v.load();
-          videoCache[src] = v;
-        });
+      function preloadVideoSrc(src) {
+        if (!src || videoCache[src]) return;
+        const v = document.createElement('video');
+        v.muted = true;
+        v.preload = 'auto';
+        v.src = src;
+        v.load();
+        videoCache[src] = v;
       }
+
+      function preloadAllVideos() {
+        triggers.forEach(trigger => preloadVideoSrc(trigger.getAttribute('data-video')));
+      }
+
+      // Luxe Bites is the featured project at the very top — preload it NOW
+      preloadVideoSrc('project_videos/Luxe_Bites.mp4');
 
       const firstTrigger = document.querySelector('.project-hover-trigger');
       const projectsSection = firstTrigger ? firstTrigger.closest('section') || firstTrigger.parentElement : null;
@@ -649,10 +653,10 @@
             preloadAllVideos();
             observer.disconnect();
           }
-        }, { rootMargin: '200px' });
+        }, { rootMargin: '400px' });
         observer.observe(projectsSection);
       } else {
-        setTimeout(preloadAllVideos, 1500);
+        setTimeout(preloadAllVideos, 1000);
       }
 
       triggers.forEach(trigger => {
