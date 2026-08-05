@@ -624,13 +624,43 @@
 
       const loader = document.getElementById('project-preview-loader');
 
+      // ── Video preload cache ──────────────────────────────────────────
+      const videoCache = {};
+
+      function preloadAllVideos() {
+        triggers.forEach(trigger => {
+          const src = trigger.getAttribute('data-video');
+          if (!src || videoCache[src]) return;
+          const v = document.createElement('video');
+          v.muted = true;
+          v.preload = 'auto';
+          v.src = src;
+          v.load();
+          videoCache[src] = v;
+        });
+      }
+
+      const firstTrigger = document.querySelector('.project-hover-trigger');
+      const projectsSection = firstTrigger ? firstTrigger.closest('section') || firstTrigger.parentElement : null;
+
+      if (projectsSection && 'IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+          if (entries[0].isIntersecting) {
+            preloadAllVideos();
+            observer.disconnect();
+          }
+        }, { rootMargin: '200px' });
+        observer.observe(projectsSection);
+      } else {
+        setTimeout(preloadAllVideos, 1500);
+      }
+
       triggers.forEach(trigger => {
         trigger.addEventListener('mouseenter', (e) => {
           const videoSrc = trigger.getAttribute('data-video');
           if (!videoSrc) return;
 
           isHovering = true;
-
           mouseX = e.clientX;
           mouseY = e.clientY - 20;
           containerX = mouseX;
@@ -640,19 +670,28 @@
           previewContainer.classList.remove('opacity-0');
           previewContainer.classList.add('opacity-100');
 
-          // Only reload if different video
           if (previewVideo.getAttribute('data-loaded') !== videoSrc) {
             previewVideo.setAttribute('data-loaded', videoSrc);
-            loader.style.opacity = '1';
-            previewVideo.style.opacity = '0';
-            previewVideo.src = videoSrc;
-            previewVideo.load();
 
-            previewVideo.oncanplay = () => {
+            const cached = videoCache[videoSrc];
+            if (cached && cached.readyState >= 3) {
+              previewVideo.src = videoSrc;
               loader.style.opacity = '0';
               previewVideo.style.opacity = '1';
               previewVideo.play().catch(() => {});
-            };
+            } else {
+              loader.style.opacity = '1';
+              previewVideo.style.opacity = '0';
+              previewVideo.src = videoSrc;
+              previewVideo.load();
+              previewVideo.oncanplay = () => {
+                if (isHovering && previewVideo.getAttribute('data-loaded') === videoSrc) {
+                  loader.style.opacity = '0';
+                  previewVideo.style.opacity = '1';
+                  previewVideo.play().catch(() => {});
+                }
+              };
+            }
           } else {
             loader.style.opacity = '0';
             previewVideo.style.opacity = '1';
@@ -684,14 +723,7 @@
     });
   </script>
 
-
-
 <!-- Aether Custom Cursor System -->
 <script src="cursor.js"></script>
 </body>
 </html>
-
-
-
-
-
