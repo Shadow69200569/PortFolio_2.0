@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html class="dark scroll-smooth" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sandeep | Certificates &amp; Credentials</title>
+<meta name="description" content="Sandeep's project portfolio and professional experience — Java Full Stack, AI, Computer Vision and more."/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@600;700&family=Inter:wght@300;400&family=Space+Mono:wght@400&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "on-secondary-fixed-variant": "#5516be",
+          "on-surface": "#e5e2e1",
+          "on-tertiary-container": "#400071",
+          "inverse-on-surface": "#313030",
+          "secondary-fixed": "#e9ddff",
+          "surface": "#1A1A1A",
+          "on-secondary-fixed": "#23005c",
+          "primary-fixed-dim": "#c4c0ff",
+          "tertiary": "#ddb7ff",
+          "secondary-fixed-dim": "#d0bcff",
+          "primary-container": "#8781ff",
+          "primary": "#c4c0ff",
+          "on-tertiary": "#490080",
+          "surface-variant": "#353534",
+          "on-tertiary-fixed": "#2c0051",
+          "on-error-container": "#ffdad6",
+          "surface-dim": "#131313",
+          "tertiary-fixed": "#f0dbff",
+          "surface-container-low": "#1c1b1b",
+          "surface-container-high": "#2a2a2a",
+          "background": "#111111",
+          "on-surface-variant": "#c7c4d8",
+          "surface-container-lowest": "#0e0e0e",
+          "secondary-container": "#571bc1",
+          "outline-variant": "#464555",
+          "surface-container": "#201f1f",
+          "surface-container-highest": "#353534",
+          "error": "#ffb4ab",
+          "glass-border": "rgba(255, 255, 255, 0.1)",
+          "accent-orange": "#F0531C",
+          "text-low": "rgba(255, 255, 255, 0.6)",
+          "surface-bright": "#3a3939",
+          "on-primary-fixed": "#100069",
+          "outline": "#918fa1",
+          "on-primary": "#2000a4",
+          "on-secondary-container": "#c4abff",
+          "error-container": "#93000a",
+          "on-primary-fixed-variant": "#3622ca",
+          "on-tertiary-fixed-variant": "#6900b3",
+          "tertiary-fixed-dim": "#ddb7ff",
+          "secondary": "#d0bcff",
+          "inverse-primary": "#4f44e2",
+          "accent-cyan": "#5EAEEA",
+          "on-error": "#690005",
+          "text-high": "#FFFFFF",
+          "on-background": "#e5e2e1",
+          "primary-fixed": "#e3dfff",
+          "on-primary-container": "#1b0091",
+          "surface-tint": "#c4c0ff",
+          "on-secondary": "#3c0091",
+          "tertiary-container": "#b76dff",
+          "inverse-surface": "#e5e2e1"
+        },
+        borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+        spacing: {
+          "section-padding-lg": "12rem",
+          "gutter": "2rem",
+          "section-padding-sm": "4rem",
+          "section-padding-md": "8rem",
+          "container-max": "1440px"
+        },
+        fontFamily: {
+          "headline-lg": ["Hanken Grotesk"],
+          "display-hero": ["Hanken Grotesk"],
+          "body-md": ["Inter"],
+          "headline-md": ["Hanken Grotesk"],
+          "label-mono": ["Space Mono"],
+          "body-lg": ["Inter"],
+          "display-hero-mobile": ["Hanken Grotesk"]
+        },
+        fontSize: {
+          "headline-lg": ["64px", { lineHeight: "120%", letterSpacing: "-0.02em", fontWeight: "600" }],
+          "display-hero": ["120px", { lineHeight: "110%", letterSpacing: "-0.04em", fontWeight: "700" }],
+          "body-md": ["16px", { lineHeight: "1.6", fontWeight: "400" }],
+          "headline-md": ["32px", { lineHeight: "130%", fontWeight: "600" }],
+          "label-mono": ["12px", { lineHeight: "100%", letterSpacing: "0.1em", fontWeight: "400" }],
+          "body-lg": ["20px", { lineHeight: "1.6", fontWeight: "300" }],
+          "display-hero-mobile": ["48px", { lineHeight: "110%", letterSpacing: "-0.02em", fontWeight: "700" }]
+        }
+      }
+    }
+  }
+</script>
+<style>
+  body { background-color: #0c0c14; color: #e5e2e1; overflow-x: hidden; }
+
+  .noise-overlay {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    pointer-events: none; z-index: 999; opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  }
+
+  /* ── Ambient glow ── */
+  .ambient-glow {
+    position: fixed; width: 50vw; height: 50vw; border-radius: 50%;
+    background: radial-gradient(circle, rgba(108,99,255,0.08) 0%, transparent 70%);
+    top: -10vw; left: -10vw; filter: blur(80px); pointer-events: none; z-index: -1;
+  }
+  .ambient-glow-secondary {
+    position: fixed; width: 40vw; height: 40vw; border-radius: 50%;
+    background: radial-gradient(circle, rgba(183,109,255,0.05) 0%, transparent 70%);
+    bottom: -10vw; right: -10vw; filter: blur(70px); pointer-events: none; z-index: -1;
+  }
+
+  /* ── Hero ── */
+  .cert-hero-title {
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-size: clamp(40px, 6vw, 72px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    color: #FFFFFF;
+  }
+
+  .cert-count-badge {
+    display: inline-flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 16px 32px; border-radius: 16px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    backdrop-filter: blur(12px);
+  }
+
+  /* ── Filter Pills ── */
+  .filter-pill {
+    padding: 8px 20px; border-radius: 999px; font-family: 'Space Mono', monospace;
+    font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase;
+    border: 1px solid rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.6);
+    background: transparent;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+  }
+  .filter-pill:hover { border-color: rgba(255,255,255,0.3); color: #fff; }
+  .filter-pill.active {
+    background: #fff; border-color: #fff;
+    color: #000; font-weight: 700;
+  }
+
+  /* ── Certificate Cards ── */
+  .cert-card {
+    position: relative; border-radius: 16px; overflow: hidden;
+    background: rgba(20,20,22,0.6);
+    border: 1px solid rgba(255,255,255,0.08);
+    backdrop-filter: blur(12px);
+    transition: all 0.3s ease;
+  }
+  .cert-card:hover {
+    border-color: rgba(196,192,255,0.4);
+    background: rgba(26,26,30,0.8);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+  }
+
+  .cert-card-img-wrap {
+    width: 100%; aspect-ratio: 16/10; overflow: hidden;
+    background: #111;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    position: relative;
+  }
+  .cert-card-img-wrap img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 0.5s ease;
+    opacity: 0;
+  }
+  .cert-card-img-wrap img.loaded { opacity: 1; }
+  .cert-card:hover .cert-card-img-wrap img { transform: scale(1.03); }
+
+  /* Tag colour variants */
+  .ctag { 
+    padding: 4px 10px; border-radius: 6px; 
+    font-family: 'Space Mono', monospace; font-size: 9px; 
+    letter-spacing: 0.05em; text-transform: uppercase; 
+    background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.8); 
+    border: 1px solid rgba(255,255,255,0.1); 
+  }
+
+  /* org icon placeholder */
+  .org-logo {
+    width: 36px; height: 36px; border-radius: 10px;
+    background: linear-gradient(135deg, rgba(196,192,255,0.15), rgba(108,99,255,0.1));
+    border: 1px solid rgba(255,255,255,0.08);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Hanken Grotesk', sans-serif; font-size: 13px; font-weight: 700;
+    color: #c4c0ff; flex-shrink: 0;
+  }
+
+  /* ── Reveal ── */
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1); }
+  .reveal.active { opacity: 1; transform: translateY(0); }
+  .d1 { transition-delay: 80ms; } .d2 { transition-delay: 160ms; } .d3 { transition-delay: 240ms; }
+  .d4 { transition-delay: 320ms; } .d5 { transition-delay: 400ms; } .d6 { transition-delay: 480ms; }
+
+  /* ── Grid layout ── */
+  .cert-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+  }
+  @media(min-width:1024px) { .cert-grid { grid-template-columns: repeat(3,1fr); } }
+  @media(min-width:768px) and (max-width:1023px) { .cert-grid { grid-template-columns: repeat(2,1fr); } }
+
+  /* card hidden for filter */
+  .cert-card-wrap.hidden-filter { display: none; }
+
+  /* ── Magnetic btn ── */
+  .magnetic-btn { position: relative; overflow: hidden; transition: transform 0.3s cubic-bezier(0.2,0.8,0.2,1); }
+  .magnetic-btn::after {
+    content: ''; position: absolute; top: 50%; left: 50%; width: 150%; height: 150%;
+    background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 60%);
+    transform: translate(-50%,-50%) scale(0); transition: transform 0.5s ease-out; pointer-events: none;
+  }
+  .magnetic-btn:hover::after { transform: translate(-50%,-50%) scale(1); }
+
+  /* ── Stats bar ── */
+  .stats-bar {
+    display: flex; gap: 1px; align-items: stretch;
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px; overflow: hidden; backdrop-filter: blur(12px);
+  }
+  .stat-item {
+    flex: 1; padding: 20px 24px; text-align: center;
+    border-right: 1px solid rgba(255,255,255,0.06);
+    transition: background 0.3s ease;
+  }
+  .stat-item:last-child { border-right: none; }
+  .stat-item:hover { background: rgba(196,192,255,0.04); }
+  .stat-num {
+    font-family: 'Hanken Grotesk', sans-serif; font-size: 28px; font-weight: 700;
+    background: linear-gradient(135deg, #fff, #c4c0ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .stat-lbl {
+    font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.35); text-transform: uppercase; margin-top: 3px;
+  }
+</style>
+</head>
+<body class="antialiased selection:bg-primary/30 selection:text-primary min-h-screen flex flex-col relative">
+<!-- Premium Scroll Progress Indicator -->
+<style id="scroll-progress-style">
+  #scroll-progress-container {
+    position: fixed;
+    top: 2%;
+    right: 8px;
+    width: 12px;
+    height: 96%;
+    background: rgba(10, 10, 20, 0.3);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 
+      0 8px 32px rgba(0, 0, 0, 0.5), 
+      inset 2px 0 3px rgba(255, 255, 255, 0.3), 
+      inset -2px 0 3px rgba(0, 0, 0, 0.5);
+    border-radius: 12px;
+    z-index: 999999;
+    overflow: hidden;
+  }
+  #scroll-progress-fill {
+    width: 100%;
+    height: 0%;
+    background: 
+      repeating-linear-gradient(45deg, rgba(255,255,255,0.08) 0px, rgba(255,255,255,0.08) 12px, rgba(255,255,255,0) 12px, rgba(255,255,255,0) 24px),
+      linear-gradient(180deg, #3d229e, #7b61ff, #e2c2ff, #7b61ff, #3d229e);
+    background-size: 100% 48px, 100% 200%;
+    animation: magma-flow 1.5s linear infinite;
+    box-shadow: 
+      0 0 16px rgba(123, 97, 255, 0.9), 
+      inset 2px 0 4px rgba(255, 255, 255, 0.9), 
+      inset -2px 0 6px rgba(61, 34, 158, 0.9);
+    border-radius: 12px;
+    will-change: height;
+    transition: height 0.1s ease-out;
+  }
+  @keyframes magma-flow {
+    0% { background-position: 0 0, 0 200%; }
+    100% { background-position: 0 48px, 0 -200%; }
+  }
+  /* Hide default browser scrollbar */
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  html {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+  }
+</style>
+<div id="scroll-progress-container">
+  <div id="scroll-progress-fill"></div>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const scrollFill = document.getElementById('scroll-progress-fill');
+    if (!scrollFill) return;
+    let ticking = false;
+    const updateScrollProgress = () => {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrollPercentage = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+      scrollFill.style.height = scrollPercentage + '%';
+      ticking = false;
+    };
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        window.requestAnimationFrame(updateScrollProgress);
+        ticking = true;
+      }
+    }, { passive: true });
+    updateScrollProgress(); // init
+  });
+</script>
+<!-- End Premium Scroll Progress Indicator -->
+
+<div class="noise-overlay"></div>
+<div class="ambient-glow"></div>
+<div class="ambient-glow-secondary"></div>
+
+<!-- ═══════════════════ NAVIGATION ═══════════════════ -->
+<nav id="navbar" class="fixed top-4 left-1/2 -translate-x-1/2 w-[90%] max-w-7xl rounded-full bg-surface/80 backdrop-blur-xl border border-glass-border shadow-2xl flex justify-between items-center px-8 py-3 z-50 transition-transform duration-300">
+  <a class="font-headline-md text-headline-md tracking-tighter text-text-high" href="index.html">AETHER</a>
+
+  <!-- Desktop Nav -->
+  <div class="hidden md:flex items-center gap-8">
+    <a class="font-body-md text-body-md text-text-low hover:text-text-high hover:bg-white/5 transition-all duration-300 px-4 py-2 rounded-full" href="index.html#hero">Home</a>
+    <a class="font-body-md text-body-md text-text-low hover:text-text-high hover:bg-white/5 transition-all duration-300 px-4 py-2 rounded-full" href="index.html#about">About</a>
+    <a class="font-body-md text-body-md text-text-low hover:text-text-high hover:bg-white/5 transition-all duration-300 px-4 py-2 rounded-full" href="index.html#skills">Skills</a>
+    <a class="font-body-md text-body-md text-text-low hover:text-text-high hover:bg-white/5 transition-all duration-300 px-4 py-2 rounded-full" href="projects.html">Work</a>
+    <a class="font-body-md text-body-md text-primary font-bold border-b border-primary pb-1 px-4 py-2 hover:bg-white/5 transition-all duration-300" href="certificates.html">Certificates</a>
+    <a class="font-body-md text-body-md text-text-low hover:text-text-high hover:bg-white/5 transition-all duration-300 px-4 py-2 rounded-full" href="github.html">GitHub</a>
+    <a class="font-body-md text-body-md text-text-low hover:text-text-high hover:bg-white/5 transition-all duration-300 px-4 py-2 rounded-full" href="leetcode.html">LeetCode</a>
+  </div>
+
+  <button class="bg-gradient-to-r from-[#6C63FF] to-[#A855F7] text-white px-6 py-2 rounded-full font-label-mono text-label-mono hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)] transition-all duration-300 magnetic-btn hidden md:block">Resume</button>
+
+  <!-- Mobile -->
+  <button id="mobile-menu-btn" class="md:hidden text-text-high" aria-label="Toggle menu">
+    <span class="material-symbols-outlined">menu</span>
+  </button>
+</nav>
+
+<!-- Mobile Menu -->
+<div id="mobile-menu" class="fixed inset-x-4 top-20 z-40 hidden glass-panel rounded-2xl p-6 flex-col gap-4">
+  <a class="font-body-md text-text-low py-2 border-b border-glass-border hover:text-text-high" href="index.html">Home</a>
+  <a class="font-body-md text-text-low py-2 border-b border-glass-border hover:text-text-high" href="index.html#about">About</a>
+  <a class="font-body-md text-text-low py-2 border-b border-glass-border hover:text-text-high" href="index.html#skills">Skills</a>
+  <a class="font-body-md text-body-md text-text-low py-2 border-b border-glass-border hover:text-text-high" href="projects.html">Work</a>
+  <a class="font-body-md text-primary font-bold py-2 border-b border-glass-border" href="certificates.html">Certificates</a>
+  <a class="font-body-md text-text-low py-2 border-b border-glass-border hover:text-text-high" href="github.html">GitHub</a>
+  <a class="font-body-md text-text-low py-2 border-b border-glass-border hover:text-text-high" href="leetcode.html">LeetCode</a>
+</div>
+
+<!-- ═══════════════════ MAIN CONTENT ═══════════════════ -->
+<main class="flex-grow relative">
+  <!-- ── HERO HEADER ── -->
+  <section class="pt-36 pb-12 px-gutter relative z-10" id="certificates">
+    <div class="max-w-7xl mx-auto border-b border-white/5 pb-10">
+      <div class="reveal flex flex-col md:flex-row md:items-end md:justify-between gap-8">
+        <div>
+          <h1 class="cert-hero-title">Certificates</h1>
+          <p class="font-body-md text-text-low mt-4 max-w-lg leading-relaxed">
+            A comprehensive record of my professional qualifications, internships, and continuous learning achievements.
+          </p>
+        </div>
+        <div class="flex items-center gap-6">
+          <div class="flex flex-col">
+            <span class="font-headline-md text-3xl text-text-high font-bold" id="stat-total">7</span>
+            <span class="font-label-mono text-[10px] text-text-low uppercase tracking-widest mt-1">Credentials</span>
+          </div>
+          <div class="w-px h-10 bg-white/10"></div>
+          <div class="flex flex-col">
+            <span class="font-headline-md text-3xl text-text-high font-bold">2</span>
+            <span class="font-label-mono text-[10px] text-text-low uppercase tracking-widest mt-1">Internships</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filter Pills -->
+      <div class="flex flex-wrap gap-2 mt-8 reveal delay-100" id="filter-pills">
+        <button class="filter-pill active" data-filter="all">All</button>
+        <button class="filter-pill" data-filter="Internship">Internship</button>
+        <button class="filter-pill" data-filter="Security">Security</button>
+        <button class="filter-pill" data-filter="Java">Java</button>
+        <button class="filter-pill" data-filter="Python">Python</button>
+        <button class="filter-pill" data-filter="Database">Database</button>
+        <button class="filter-pill" data-filter="Problem Solving">Problem Solving</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CERTIFICATES GRID ── -->
+  <section class="px-gutter pb-24 relative z-10">
+    <div class="max-w-7xl mx-auto">
+      <div id="certificates-grid" class="cert-grid">
+        <!-- Injected via JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Floating Cursor Preview (Hidden by default) -->
+  <div id="cert-preview-container" class="fixed pointer-events-none z-[100] opacity-0 transition-opacity duration-300 flex items-center justify-center top-0 left-0" style="will-change: transform;">
+    <div id="cert-preview-card" class="glass-card border border-primary/30 rounded-2xl overflow-hidden shadow-[0_0_40px_rgba(123,97,255,0.4)] relative" style="width: 420px; aspect-ratio: 4/3; transform-style: preserve-3d; will-change: transform;">
+      <div class="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent pointer-events-none z-10 rounded-2xl"></div>
+      <img id="cert-preview-image" src="" alt="Certificate Preview" class="w-full h-full object-cover transition-opacity duration-300 opacity-0" />
+      <iframe id="cert-preview-pdf" src="" class="w-full h-full border-0 hidden transition-opacity duration-300 opacity-0"></iframe>
+    </div>
+  </div>
+
+  <!-- Fullscreen Modal Gallery -->
+  <div id="cert-modal" class="fixed inset-0 z-[999999] bg-[#0a0a14]/95 backdrop-blur-2xl opacity-0 pointer-events-none transition-opacity duration-500 flex flex-col">
+    <div class="flex justify-end p-6 absolute top-0 right-0 w-full z-50">
+      <button id="cert-modal-close" class="w-12 h-12 rounded-full glass-card flex items-center justify-center text-text-high hover:text-primary transition-colors magnetic-effect group">
+        <span class="material-symbols-outlined text-3xl group-hover:rotate-90 transition-transform duration-300">close</span>
+      </button>
+    </div>
+
+    <div class="flex-grow flex items-center justify-center p-4 md:p-12 relative h-full w-full">
+      <button id="cert-modal-prev" class="absolute left-4 md:left-12 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full glass-card flex items-center justify-center text-text-high hover:text-primary transition-colors magnetic-effect z-50">
+        <span class="material-symbols-outlined text-3xl">chevron_left</span>
+      </button>
+      
+      <div class="relative w-full max-w-6xl h-full max-h-[85vh] flex items-center justify-center">
+        <!-- Image / PDF Container -->
+        <div class="w-full h-full relative flex items-center justify-center">
+          <img id="cert-modal-image" src="" alt="Certificate" class="max-w-full max-h-full object-contain filter drop-shadow-2xl transition-transform duration-500 scale-95 opacity-0 rounded-lg" />
+          <iframe id="cert-modal-pdf" src="" class="w-full h-full max-h-[85vh] border-0 hidden transition-transform duration-500 scale-95 opacity-0 rounded-lg shadow-2xl"></iframe>
+        </div>
+      </div>
+
+      <button id="cert-modal-next" class="absolute right-4 md:right-12 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full glass-card flex items-center justify-center text-text-high hover:text-primary transition-colors magnetic-effect z-50">
+        <span class="material-symbols-outlined text-3xl">chevron_right</span>
+      </button>
+    </div>
+    
+    <div class="p-6 md:p-8 text-center bg-gradient-to-t from-[#0a0a14] via-[#0a0a14]/80 to-transparent absolute bottom-0 w-full z-40">
+      <h3 id="cert-modal-title" class="font-headline-md text-2xl text-text-high mb-2"></h3>
+      <div class="flex items-center justify-center gap-4 font-label-mono text-sm uppercase tracking-widest text-text-low">
+        <span id="cert-modal-org" class="text-primary"></span>
+        <span class="w-1 h-1 rounded-full bg-glass-border"></span>
+        <span id="cert-modal-date"></span>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- ═══════════════════ FOOTER ═══════════════════ -->
+<footer class="w-full bg-background">
+  <div class="h-[1px] w-full" style="background:linear-gradient(to right,transparent,#6C63FF 30%,#A855F7 70%,transparent);"></div>
+  <div class="max-w-7xl mx-auto px-gutter py-10 flex flex-col md:flex-row justify-between items-center gap-6">
+    <span style="font-family:'Hanken Grotesk',sans-serif;font-size:22px;font-weight:700;letter-spacing:-0.04em;color:#FFFFFF;-webkit-text-fill-color:#FFFFFF;">AETHER</span>
+    <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.1em;color:rgba(255,255,255,0.4);">© 2026 SANDEEP. BUILT WITH PRECISION.</span>
+    <div class="flex flex-wrap justify-center gap-6">
+      <a style="font-family:'Space Mono',monospace;font-size:11px;color:rgba(255,255,255,0.5);text-decoration:none;transition:color .3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'" href="https://github.com/Shadow69200569" target="_blank" rel="noopener">GitHub</a>
+      <a style="font-family:'Space Mono',monospace;font-size:11px;color:rgba(255,255,255,0.5);text-decoration:none;transition:color .3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'" href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
+      <a style="font-family:'Space Mono',monospace;font-size:11px;color:rgba(255,255,255,0.5);text-decoration:none;transition:color .3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'" href="github.html">Dashboard</a>
+      <a style="font-family:'Space Mono',monospace;font-size:11px;color:rgba(255,255,255,0.5);text-decoration:none;transition:color .3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'" href="index.html">Home</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════════════ JS ═══════════════════ -->
+<script>
+  // Scroll Reveal
+  function revealOnScroll() {
+    document.querySelectorAll('.reveal').forEach(el => {
+      if (el.getBoundingClientRect().top < window.innerHeight - 100) el.classList.add('active');
+    });
+  }
+  window.addEventListener('scroll', revealOnScroll);
+  revealOnScroll();
+
+  // Magnetic buttons
+  document.querySelectorAll('.magnetic-btn').forEach(btn => {
+    btn.addEventListener('mousemove', (e) => {
+      const rect = btn.getBoundingClientRect();
+      const range = 15;
+      const moveX = ((e.clientX - rect.left - rect.width  / 2) / (rect.width  / 2)) * range;
+      const moveY = ((e.clientY - rect.top  - rect.height / 2) / (rect.height / 2)) * range;
+      btn.style.transform = `translate(${moveX}px, ${moveY}px)`;
+    });
+    btn.addEventListener('mouseleave', () => { btn.style.transform = 'translate(0px, 0px)'; });
+  });
+
+  // Navbar hide / show on scroll
+  let lastScrollTop = 0;
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    const st = window.pageYOffset || document.documentElement.scrollTop;
+    navbar.style.transform = (st > lastScrollTop && st > 100)
+      ? 'translate(-50%, -150%)'
+      : 'translate(-50%, 0)';
+    lastScrollTop = st <= 0 ? 0 : st;
+  }, false);
+
+  // Mobile menu toggle
+  const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+  const mobileMenu    = document.getElementById('mobile-menu');
+  mobileMenuBtn.addEventListener('click', () => {
+    mobileMenu.classList.toggle('hidden');
+    mobileMenu.classList.toggle('flex');
+  });
+  mobileMenu.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      mobileMenu.classList.add('hidden');
+      mobileMenu.classList.remove('flex');
+    });
+  });
+</script>
+<!-- Certificates Custom Script -->
+<script>
+// --- CERTIFICATES DATA ---
+const certificatesData = [
+  {
+    title: "Python Internship",
+    org: "Besant Technologies",
+    date: "2025",
+    tag: "Internship",
+    url: "certificates/Besant_Tech_Intern.jpg"
+  },
+  {
+    title: "Web Development Internship",
+    org: "CodSoft",
+    date: "Sep 2025",
+    tag: "Internship",
+    credentialId: "4aa7b9d",
+    url: "certificates/Codsoft_Intern.jpg"
+  },
+  {
+    title: "Junior Cybersecurity Analyst",
+    org: "Cisco Networking Academy",
+    date: "2026",
+    tag: "Security",
+    url: "certificates/JuniorCybersecurityAnalyst.png"
+  },
+  {
+    title: "Java (Basic)",
+    org: "HackerRank",
+    date: "2025",
+    tag: "Java",
+    url: "certificates/Java_Basic.jpeg"
+  },
+  {
+    title: "Problem Solving (Basic)",
+    org: "HackerRank",
+    date: "2025",
+    tag: "Problem Solving",
+    url: "certificates/problem_solving_basic certificate.png"
+  },
+  {
+    title: "Python (Basic)",
+    org: "HackerRank",
+    date: "2025",
+    tag: "Python",
+    url: "certificates/python_basic certificate.png"
+  },
+  {
+    title: "SQL (Basic)",
+    org: "HackerRank",
+    date: "2025",
+    tag: "Database",
+    url: "certificates/sql_basic certificate.png"
+  }
+];
+
+document.addEventListener('DOMContentLoaded', () => {
+  const gridContainer  = document.getElementById('certificates-grid');
+  const previewContainer = document.getElementById('cert-preview-container');
+  const previewCard    = document.getElementById('cert-preview-card');
+  const previewImage   = document.getElementById('cert-preview-image');
+  const previewPdf     = document.getElementById('cert-preview-pdf');
+
+  const modal      = document.getElementById('cert-modal');
+  const modalImage = document.getElementById('cert-modal-image');
+  const modalPdf   = document.getElementById('cert-modal-pdf');
+  const modalTitle = document.getElementById('cert-modal-title');
+  const modalOrg   = document.getElementById('cert-modal-org');
+  const modalDate  = document.getElementById('cert-modal-date');
+  const modalClose = document.getElementById('cert-modal-close');
+  const modalNext  = document.getElementById('cert-modal-next');
+  const modalPrev  = document.getElementById('cert-modal-prev');
+
+  let currentModalIndex = 0;
+
+  // Tag colour helper
+  const TAG_MAP = { Internship:'ctag-Internship', Security:'ctag-Security', Java:'ctag-Java', Python:'ctag-Python', Database:'ctag-Database' };
+  function tagClass(tag) { return 'ctag ' + (TAG_MAP[tag] || 'ctag-default'); }
+  function orgInitial(org) { return org.trim().charAt(0).toUpperCase(); }
+
+  // ── Render Grid Cards ──
+  certificatesData.forEach((cert, index) => {
+    const wrap = document.createElement('div');
+    wrap.className = 'cert-card-wrap reveal d' + ((index % 6) + 1);
+    wrap.dataset.tag = cert.tag;
+
+    const card = document.createElement('div');
+    card.className = 'cert-card';
+    card.dataset.index = index;
+
+    card.innerHTML = `
+      <div style="padding:24px; position:relative; z-index:2; height:100%; display:flex; flex-direction:column;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+          <div style="font-family:'Space Mono',monospace;font-size:10px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.05em;">${cert.org}</div>
+          <span class="${tagClass(cert.tag)}">${cert.tag}</span>
+        </div>
+        <h3 class="cert-card-title" style="font-family:'Hanken Grotesk',sans-serif;font-size:18px;font-weight:600;color:#fff;line-height:1.3;margin-bottom:8px;transition:color 0.2s;">${cert.title}</h3>
+        <div style="font-family:'Space Mono',monospace;font-size:10px;color:rgba(255,255,255,0.3);margin-bottom:24px; flex-grow: 1;">${cert.date}</div>
+        
+        <div style="display:flex;align-items:center;gap:6px;border-top:1px solid rgba(255,255,255,0.05);padding-top:16px;transition:gap 0.2s;" class="group-hover:gap-2 mt-auto">
+          <span style="font-family:'Inter',sans-serif;font-size:12px;font-weight:500;color:rgba(255,255,255,0.6);">View Credential</span>
+          <span class="material-symbols-outlined cert-arrow" style="font-size:14px;color:rgba(255,255,255,0.4);">arrow_forward</span>
+        </div>
+      </div>
+    `;
+
+    // Hover interactions
+    card.addEventListener('mouseenter', () => {
+      card.querySelector('.cert-card-title').style.color = '#c4c0ff';
+      const arr = card.querySelector('.cert-arrow');
+      if (arr) arr.style.color = '#c4c0ff';
+      if (window.innerWidth < 768) return;
+      if (cert.url.endsWith('.pdf')) {
+        previewImage.classList.add('hidden'); previewPdf.classList.remove('hidden');
+        previewPdf.src = cert.url; previewPdf.style.opacity = '1';
+      } else {
+        previewPdf.classList.add('hidden'); previewImage.classList.remove('hidden');
+        previewImage.src = cert.url; previewImage.style.opacity = '1';
+      }
+      previewContainer.style.opacity = '1';
+    });
+    card.addEventListener('mouseleave', () => {
+      card.querySelector('.cert-card-title').style.color = '';
+      const arr = card.querySelector('.cert-arrow');
+      if (arr) arr.style.color = '';
+      previewContainer.style.opacity = '0';
+    });
+    card.addEventListener('click', () => openModal(index));
+
+    wrap.appendChild(card);
+    gridContainer.appendChild(wrap);
+  });
+
+  // Trigger reveal for cards
+  setTimeout(() => {
+    document.querySelectorAll('.reveal').forEach(el => {
+      if (el.getBoundingClientRect().top < window.innerHeight) el.classList.add('active');
+    });
+  }, 100);
+
+  // ── Filter Pills ──
+  document.querySelectorAll('.filter-pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      const f = pill.dataset.filter;
+      document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      document.querySelectorAll('.cert-card-wrap').forEach(w => {
+        w.classList.toggle('hidden-filter', f !== 'all' && w.dataset.tag !== f);
+      });
+    });
+  });
+
+  // ── Preview physics (cursor-follow) ──
+  let targetX = 0, targetY = 0, currentX = 0, currentY = 0;
+  let isHovering = false;
+  gridContainer.addEventListener('mouseenter', () => { isHovering = true; });
+  gridContainer.addEventListener('mouseleave', () => { isHovering = false; previewContainer.style.opacity = '0'; });
+  document.addEventListener('mousemove', (e) => { targetX = e.clientX; targetY = e.clientY; });
+
+  (function physics() {
+    if (isHovering && window.innerWidth >= 768) {
+      currentX += (targetX - currentX) * 0.15;
+      currentY += (targetY - currentY) * 0.15;
+      const W = 420, H = 315;
+      let ox = 24, oy = 24;
+      if (currentX + ox + W > window.innerWidth)  ox = -W - 24;
+      if (currentY + oy + H > window.innerHeight) oy = -H - 24;
+      previewContainer.style.transform = `translate3d(${currentX + ox}px,${currentY + oy}px,0)`;
+      const dx = targetX - currentX, dy = targetY - currentY;
+      previewCard.style.transform = `perspective(1000px) rotateX(${Math.max(-18,Math.min(18,dy*-0.1))}deg) rotateY(${Math.max(-18,Math.min(18,dx*0.1))}deg)`;
+    }
+    requestAnimationFrame(physics);
+  })();
+
+  // ── Modal ──
+  function openModal(index) {
+    currentModalIndex = index;
+    updateModalContent();
+    modal.classList.remove('pointer-events-none');
+    modal.style.opacity = '1';
+    setTimeout(() => {
+      modalImage.style.transform = 'scale(1)'; modalPdf.style.transform = 'scale(1)';
+      modalImage.style.opacity = '1'; modalPdf.style.opacity = '1';
+    }, 50);
+  }
+  function closeModal() {
+    modal.style.opacity = '0'; modal.classList.add('pointer-events-none');
+    modalImage.style.transform = 'scale(0.95)'; modalImage.style.opacity = '0';
+    modalPdf.style.transform = 'scale(0.95)'; modalPdf.style.opacity = '0';
+  }
+  function updateModalContent() {
+    const cert = certificatesData[currentModalIndex];
+    modalImage.style.opacity = '0'; modalPdf.style.opacity = '0';
+    setTimeout(() => {
+      if (cert.url.endsWith('.pdf')) {
+        modalImage.classList.add('hidden'); modalPdf.classList.remove('hidden');
+        modalPdf.src = cert.url; modalPdf.style.opacity = '1';
+      } else {
+        modalPdf.classList.add('hidden'); modalImage.classList.remove('hidden');
+        modalImage.src = cert.url; modalImage.style.opacity = '1';
+      }
+      modalTitle.textContent = cert.title;
+      modalOrg.textContent   = cert.org;
+      modalDate.textContent  = cert.date;
+    }, 280);
+  }
+  function nextModal() { currentModalIndex = (currentModalIndex + 1) % certificatesData.length; updateModalContent(); }
+  function prevModal() { currentModalIndex = (currentModalIndex - 1 + certificatesData.length) % certificatesData.length; updateModalContent(); }
+
+  modalClose.addEventListener('click', closeModal);
+  modalNext.addEventListener('click', nextModal);
+  modalPrev.addEventListener('click', prevModal);
+  modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+  document.addEventListener('keydown', (e) => {
+    if (modal.style.opacity === '1') {
+      if (e.key === 'Escape') closeModal();
+      if (e.key === 'ArrowRight') nextModal();
+      if (e.key === 'ArrowLeft') prevModal();
+    }
+  });
+});
+</script>
+
+
+<!-- Aether Custom Cursor System -->
+<script src="cursor.js"></script>
+</html>
+

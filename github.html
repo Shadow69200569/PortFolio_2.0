@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html class="dark scroll-smooth" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sandeep | GitHub Dashboard</title>
+<meta name="description" content="Live GitHub activity dashboard — real repos, contributions and activity for Shadow69200569."/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;600;700;800&family=Inter:wght@300;400;500&family=Space+Mono&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script>
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "surface-container-high": "#2a2a2a",
+          "surface-container": "#201f1f",
+          "surface-container-highest": "#353534",
+          "surface-container-lowest": "#0e0e0e",
+          "background": "#111111",
+          "secondary": "#d0bcff",
+          "glass-border": "rgba(255, 255, 255, 0.1)",
+          "accent-cyan": "#5EAEEA",
+          "accent-orange": "#F0531C",
+          "text-low": "rgba(255, 255, 255, 0.6)",
+          "text-high": "#FFFFFF",
+          "primary": "#c4c0ff",
+          "tertiary": "#ddb7ff",
+          "surface": "#1A1A1A",
+          "on-surface": "#e5e2e1",
+          "on-surface-variant": "#c7c4d8",
+          "outline": "#918fa1",
+          "tertiary-container": "#b76dff"
+        },
+        fontFamily: {
+          "headline-lg": ["Hanken Grotesk"],
+          "headline-md": ["Hanken Grotesk"],
+          "body-md": ["Inter"],
+          "label-mono": ["Space Mono"],
+          "body-lg": ["Inter"],
+        },
+        spacing: { "gutter": "2rem", "container-max": "1440px", "section-padding-sm": "4rem", "section-padding-md": "8rem" }
+      }
+    }
+  }
+</script>
+<style>
+  body { background-color: #111; color: #e5e2e1; overflow-x: hidden; }
+
+  .noise-overlay {
+    position: fixed; inset: 0; pointer-events: none; z-index: 999; opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .blob { position: fixed; border-radius: 50%; pointer-events: none; filter: blur(80px); opacity: 0.12; z-index: -1; }
+
+  .glass-card {
+    background: rgba(26,26,26,0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.1);
+    transition: border-color 0.3s ease, transform 0.3s ease;
+  }
+  .glass-card:hover { border-color: rgba(255,255,255,0.25); }
+
+  /* Heatmap */
+  .h-cell {
+    width: 11px; height: 11px; border-radius: 2px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    cursor: pointer;
+  }
+  .h-cell:hover { transform: scale(1.6); z-index: 10; box-shadow: 0 0 8px rgba(196,192,255,0.7); }
+
+  /* Language bar glow */
+  .lang-bar { box-shadow: 0 0 8px rgba(196,192,255,0.3); }
+
+  /* Scroll reveal */
+  .reveal { opacity: 0; transform: translateY(24px); transition: all 0.7s cubic-bezier(0.16,1,0.3,1); }
+  .reveal.active { opacity: 1; transform: translateY(0); }
+  .d1 { transition-delay: 100ms; }
+  .d2 { transition-delay: 200ms; }
+  .d3 { transition-delay: 300ms; }
+
+  /* Skeleton loader */
+  .skeleton {
+    background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.04) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 6px;
+  }
+  @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+
+  /* Streak pulse */
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 12px rgba(196,192,255,0.25); }
+    50%       { box-shadow: 0 0 24px rgba(196,192,255,0.6); }
+  }
+  .streak-ring { animation: pulse-glow 2.5s ease-in-out infinite; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #111; }
+  ::-webkit-scrollbar-thumb { background: #353534; border-radius: 4px; }
+
+  /* Event type colors */
+  .ev-push    { border-color: #c4c0ff; }
+  .ev-pr      { border-color: #ddb7ff; }
+  .ev-star    { border-color: #F0531C; }
+  .ev-create  { border-color: #5EAEEA; }
+  .ev-fork    { border-color: #d0bcff; }
+  .ev-other   { border-color: rgba(255,255,255,0.3); }
+</style>
+</head>
+<body class="font-body-md text-body-md min-h-screen">
+<!-- Premium Scroll Progress Indicator -->
+<style id="scroll-progress-style">
+  #scroll-progress-container {
+    position: fixed;
+    top: 2%;
+    right: 8px;
+    width: 12px;
+    height: 96%;
+    background: rgba(10, 10, 20, 0.3);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 
+      0 8px 32px rgba(0, 0, 0, 0.5), 
+      inset 2px 0 3px rgba(255, 255, 255, 0.3), 
+      inset -2px 0 3px rgba(0, 0, 0, 0.5);
+    border-radius: 12px;
+    z-index: 999999;
+    overflow: hidden;
+  }
+  #scroll-progress-fill {
+    width: 100%;
+    height: 0%;
+    background: 
+      repeating-linear-gradient(45deg, rgba(255,255,255,0.08) 0px, rgba(255,255,255,0.08) 12px, rgba(255,255,255,0) 12px, rgba(255,255,255,0) 24px),
+      linear-gradient(180deg, #3d229e, #7b61ff, #e2c2ff, #7b61ff, #3d229e);
+    background-size: 100% 48px, 100% 200%;
+    animation: magma-flow 1.5s linear infinite;
+    box-shadow: 
+      0 0 16px rgba(123, 97, 255, 0.9), 
+      inset 2px 0 4px rgba(255, 255, 255, 0.9), 
+      inset -2px 0 6px rgba(61, 34, 158, 0.9);
+    border-radius: 12px;
+    will-change: height;
+    transition: height 0.1s ease-out;
+  }
+  @keyframes magma-flow {
+    0% { background-position: 0 0, 0 200%; }
+    100% { background-position: 0 48px, 0 -200%; }
+  }
+  /* Hide default browser scrollbar */
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  html {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+  }
+</style>
+<div id="scroll-progress-container">
+  <div id="scroll-progress-fill"></div>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const scrollFill = document.getElementById('scroll-progress-fill');
+    if (!scrollFill) return;
+    let ticking = false;
+    const updateScrollProgress = () => {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrollPercentage = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+      scrollFill.style.height = scrollPercentage + '%';
+      ticking = false;
+    };
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        window.requestAnimationFrame(updateScrollProgress);
+        ticking = true;
+      }
+    }, { passive: true });
+    updateScrollProgress(); // init
+  });
+</script>
+<!-- End Premium Scroll Progress Indicator -->
+
+<div class="noise-overlay"></div>
+<div class="blob w-[50vw] h-[50vw] bg-[#c4c0ff] top-[-10%] left-[-10%]"></div>
+<div class="blob w-[40vw] h-[40vw] bg-[#b76dff] bottom-[-10%] right-[-10%]"></div>
+
+<!-- ═══════ NAV ═══════ -->
+<nav id="navbar" class="fixed top-4 left-1/2 -translate-x-1/2 w-[90%] max-w-7xl rounded-full bg-surface/80 backdrop-blur-xl border border-glass-border shadow-2xl flex justify-between items-center px-8 py-3 z-50 transition-transform duration-300">
+  <a class="font-headline-md tracking-tighter text-text-high text-[24px] font-bold" href="index.html">AETHER</a>
+  <div class="hidden md:flex items-center gap-6">
+    <a class="text-text-low hover:text-text-high hover:bg-white/5 transition-all px-4 py-2 rounded-full text-sm" href="index.html#hero">Home</a>
+    <a class="text-text-low hover:text-text-high hover:bg-white/5 transition-all px-4 py-2 rounded-full text-sm" href="index.html#about">About</a>
+    <a class="text-text-low hover:text-text-high hover:bg-white/5 transition-all px-4 py-2 rounded-full text-sm" href="projects.html">Work</a>
+    <a class="text-text-low hover:text-text-high hover:bg-white/5 transition-all px-4 py-2 rounded-full text-sm" href="certificates.html">Certificates</a>
+    <a class="text-primary font-bold border-b border-primary pb-0.5 px-4 py-2 text-sm" href="github.html">GitHub</a>
+    <a class="text-text-low hover:text-text-high hover:bg-white/5 transition-all px-4 py-2 rounded-full text-sm" href="leetcode.html">LeetCode</a>
+  </div>
+  <a id="gh-profile-link" href="https://github.com/Shadow69200569" target="_blank" rel="noopener"
+     class="hidden md:inline-flex items-center gap-2 px-5 py-2 rounded-full text-white text-xs font-mono bg-gradient-to-r from-[#6C63FF] to-[#A855F7] hover:shadow-lg transition-all">
+    <span class="material-symbols-outlined text-[16px]">open_in_new</span> View Profile
+  </a>
+  <button id="mob-btn" class="md:hidden text-text-high"><span class="material-symbols-outlined">menu</span></button>
+</nav>
+
+<!-- Mobile menu -->
+<div id="mob-menu" class="fixed inset-x-4 top-20 z-40 hidden glass-card rounded-2xl p-6 flex-col gap-3">
+  <a class="text-text-low py-2 border-b border-glass-border hover:text-text-high text-sm" href="index.html">Home</a>
+  <a class="text-text-low py-2 border-b border-glass-border hover:text-text-high text-sm" href="index.html#about">About</a>
+  <a class="text-text-low py-2 border-b border-glass-border hover:text-text-high text-sm" href="projects.html">Work</a>
+  <a class="text-text-low py-2 border-b border-glass-border hover:text-text-high text-sm" href="certificates.html">Certificates</a>
+  <a class="text-primary font-bold py-2 border-b border-glass-border text-sm" href="github.html">GitHub</a>
+  <a class="text-text-low py-2 border-b border-glass-border hover:text-text-high text-sm" href="leetcode.html">LeetCode</a>
+</div>
+
+<main class="relative pt-32 pb-section-padding-md px-gutter max-w-container-max mx-auto space-y-8">
+
+  <!-- ── Profile Header ── -->
+  <header class="flex flex-col md:flex-row items-start md:items-end justify-between gap-8 reveal">
+    <div class="flex items-center gap-6">
+      <div class="relative group">
+        <div class="absolute -inset-1 bg-gradient-to-r from-primary to-tertiary rounded-full blur opacity-40 group-hover:opacity-80 transition duration-700"></div>
+        <img id="gh-avatar" src="" alt="GitHub avatar"
+             class="relative w-24 h-24 rounded-full object-cover border-2 border-glass-border streak-ring skeleton"/>
+      </div>
+      <div>
+        <h1 id="gh-name" class="font-headline-lg text-text-high leading-tight skeleton min-w-[160px] min-h-[40px]" style="font-size:clamp(28px,4vw,52px);"></h1>
+        <p id="gh-handle" class="font-label-mono text-[12px] text-primary flex items-center gap-1 mt-1">
+          <span class="material-symbols-outlined text-[13px]">link</span>
+        </p>
+        <p id="gh-bio" class="text-text-low text-sm mt-1 max-w-sm"></p>
+      </div>
+    </div>
+    <!-- Headline stats -->
+    <div class="flex gap-4 flex-wrap">
+      <div class="glass-card p-5 rounded-2xl min-w-[130px]">
+        <p class="font-label-mono text-[10px] text-text-low mb-1">PUBLIC REPOS</p>
+        <p id="stat-repos" class="font-headline-md text-text-high text-[26px] skeleton min-h-[30px]"></p>
+      </div>
+      <div class="glass-card p-5 rounded-2xl min-w-[130px]">
+        <p class="font-label-mono text-[10px] text-text-low mb-1">FOLLOWERS</p>
+        <p id="stat-followers" class="font-headline-md text-primary text-[26px] skeleton min-h-[30px]"></p>
+      </div>
+      <div class="glass-card p-5 rounded-2xl min-w-[130px]">
+        <p class="font-label-mono text-[10px] text-text-low mb-1">FOLLOWING</p>
+        <p id="stat-following" class="font-headline-md text-text-high text-[26px] skeleton min-h-[30px]"></p>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── 12-col Grid ── -->
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+    <!-- LEFT 8 cols -->
+    <div class="lg:col-span-8 space-y-6">
+
+      <!-- Contribution Heatmap (ghchart.ssh.surf) -->
+      <section class="glass-card p-6 md:p-8 rounded-3xl reveal overflow-hidden">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-5 gap-3">
+          <div>
+            <h2 class="font-headline-md text-text-high text-[20px]">Contribution Activity</h2>
+            <p class="font-label-mono text-[10px] text-text-low mt-1">Last 52 weeks · github.com/Shadow69200569</p>
+          </div>
+          <div class="flex items-center gap-2 font-label-mono text-[10px] text-text-low">
+            <span>Less</span>
+            <div class="flex gap-1">
+              <div class="w-[10px] h-[10px] rounded-[2px] bg-surface-container-highest"></div>
+              <div class="w-[10px] h-[10px] rounded-[2px] bg-[#216e39]/60"></div>
+              <div class="w-[10px] h-[10px] rounded-[2px] bg-[#30a14e]/80"></div>
+              <div class="w-[10px] h-[10px] rounded-[2px] bg-[#40c463]"></div>
+              <div class="w-[10px] h-[10px] rounded-[2px] bg-[#9be9a8]"></div>
+            </div>
+            <span>More</span>
+          </div>
+        </div>
+        <!-- Block Heatmap (GitHub-style, JS rendered with real event data) -->
+        <div class="w-full overflow-x-auto">
+          <!-- Month labels -->
+          <div id="heatmap-months" class="flex mb-1 pl-1" style="gap:0;"></div>
+          <!-- Cell grid -->
+          <div id="heatmap-grid" class="grid gap-[3px] overflow-x-auto pb-1"
+               style="grid-auto-flow:column;grid-template-rows:repeat(7,11px);"></div>
+        </div>
+      </section>
+
+      <!-- GitHub Streak Stats embed -->
+      <section class="glass-card p-6 md:p-8 rounded-3xl reveal d1 overflow-hidden">
+        <h2 class="font-label-mono text-label-mono text-text-low mb-5">STREAK STATS</h2>
+        <div class="flex justify-center">
+          <img src="https://streak-stats.demolab.com?user=Shadow69200569&theme=transparent&hide_border=true&stroke=rgba(255,255,255,0.1)&ring=c4c0ff&fire=F0531C&currStreakLabel=c4c0ff&sideNums=FFFFFF&currStreakNum=FFFFFF&sideLabels=c7c4d8&dates=c7c4d8&background=00000000"
+               alt="GitHub Streak Stats"
+               class="rounded-xl w-full max-w-xl"
+               onerror="this.parentElement.innerHTML='<p class=\'text-text-low text-xs text-center font-label-mono py-4\'>Streak stats unavailable — check network.</p>'"/>
+        </div>
+      </section>
+
+      <!-- Top Repos (live from API) -->
+      <section class="reveal d2">
+        <div class="flex justify-between items-center mb-5">
+          <h2 class="font-headline-md text-text-high text-[20px]">Top Repositories</h2>
+          <a id="gh-repos-link" href="https://github.com/Shadow69200569?tab=repositories" target="_blank" rel="noopener"
+             class="font-label-mono text-[10px] text-primary hover:text-white flex items-center gap-1 transition-colors">
+            View all <span class="material-symbols-outlined text-[13px]">open_in_new</span>
+          </a>
+        </div>
+        <div id="repos-grid" class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <!-- Skeleton placeholders -->
+          <div class="glass-card p-6 rounded-3xl h-44 skeleton"></div>
+          <div class="glass-card p-6 rounded-3xl h-44 skeleton"></div>
+          <div class="glass-card p-6 rounded-3xl h-44 skeleton"></div>
+          <div class="glass-card p-6 rounded-3xl h-44 skeleton"></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- RIGHT 4 cols -->
+    <div class="lg:col-span-4 space-y-5">
+
+      <!-- Top Languages (live from API) -->
+      <section class="glass-card p-6 md:p-8 rounded-3xl reveal">
+        <h2 class="font-label-mono text-label-mono text-text-low mb-6">TOP LANGUAGES</h2>
+        <div id="lang-list" class="space-y-5">
+          <div class="skeleton h-4 rounded w-full"></div>
+          <div class="skeleton h-4 rounded w-4/5"></div>
+          <div class="skeleton h-4 rounded w-3/5"></div>
+          <div class="skeleton h-4 rounded w-2/5"></div>
+        </div>
+      </section>
+
+      <!-- Merge Velocity Donut (PR stats from API) -->
+      <section class="glass-card p-6 md:p-8 rounded-3xl reveal d1">
+        <h2 class="font-label-mono text-label-mono text-text-low mb-5">REPOSITORY STATS</h2>
+        <div class="flex flex-col items-center gap-4">
+          <div class="relative w-36 h-36">
+            <svg class="w-full h-full" viewBox="0 0 144 144">
+              <circle cx="72" cy="72" r="55" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="14"/>
+              <circle id="donut-arc" cx="72" cy="72" r="55" fill="none" stroke="#c4c0ff"
+                      stroke-dasharray="345" stroke-dashoffset="86"
+                      stroke-linecap="round" stroke-width="14"
+                      transform="rotate(-90 72 72)"/>
+              <text id="donut-pct" x="50%" y="45%" text-anchor="middle" dy=".35em" fill="#FFFFFF" font-family="Space Mono" font-size="20" font-weight="700">—</text>
+              <text x="50%" y="62%" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-family="Space Mono" font-size="8">FORKED</text>
+            </svg>
+          </div>
+          <div id="donut-legend" class="flex gap-5 font-label-mono text-[11px]">
+            <div class="flex items-center gap-1.5"><div class="w-2 h-2 rounded-full bg-primary"></div><span class="text-text-low">Original</span></div>
+            <div class="flex items-center gap-1.5"><div class="w-2 h-2 rounded-full bg-surface-container-highest"></div><span class="text-text-low">Forks</span></div>
+          </div>
+          <div id="star-count" class="glass-card w-full p-4 rounded-2xl flex items-center justify-between">
+            <span class="font-label-mono text-[11px] text-text-low flex items-center gap-1.5"><span class="material-symbols-outlined text-[16px] text-accent-orange">star</span> Total Stars</span>
+            <span id="total-stars" class="font-headline-md text-text-high text-[20px] skeleton min-w-[32px] text-right">—</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Recent Activity (live from API) -->
+      <section class="glass-card p-6 md:p-8 rounded-3xl reveal d2">
+        <h2 class="font-label-mono text-label-mono text-text-low mb-6">RECENT ACTIVITY</h2>
+        <div id="activity-feed" class="relative space-y-5 before:absolute before:left-[11px] before:top-2 before:bottom-0 before:w-[1px] before:bg-glass-border">
+          <div class="skeleton h-12 rounded-xl w-full ml-8"></div>
+          <div class="skeleton h-12 rounded-xl w-full ml-8"></div>
+          <div class="skeleton h-12 rounded-xl w-full ml-8"></div>
+          <div class="skeleton h-12 rounded-xl w-full ml-8"></div>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>
+
+<!-- ═══════ FOOTER ═══════ -->
+<footer class="w-full bg-background mt-10">
+  <div class="h-[1px] w-full" style="background:linear-gradient(to right,transparent,#6C63FF 30%,#A855F7 70%,transparent);"></div>
+  <div class="max-w-7xl mx-auto px-gutter py-10 flex flex-col md:flex-row justify-between items-center gap-6">
+    <span style="font-family:'Hanken Grotesk',sans-serif;font-size:22px;font-weight:700;letter-spacing:-0.04em;color:#FFFFFF;-webkit-text-fill-color:#FFFFFF;">AETHER</span>
+    <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.1em;color:rgba(255,255,255,0.4);">© 2026 SANDEEP. BUILT WITH PRECISION.</span>
+    <div class="flex flex-wrap justify-center gap-6">
+      <a style="font-family:'Space Mono',monospace;font-size:11px;color:rgba(255,255,255,0.5);text-decoration:none;transition:color .3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'" href="https://github.com/Shadow69200569" target="_blank" rel="noopener">GitHub</a>
+      <a style="font-family:'Space Mono',monospace;font-size:11px;color:rgba(255,255,255,0.5);text-decoration:none;transition:color .3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'" href="projects.html">Work</a>
+      <a style="font-family:'Space Mono',monospace;font-size:11px;color:rgba(255,255,255,0.5);text-decoration:none;transition:color .3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'" href="index.html">Home</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const USERNAME = 'Shadow69200569';
+  const API      = 'https://api.github.com';
+
+  // ── Language color palette ──
+  const LANG_COLORS = {
+    Java:       { color: '#b07219', text: 'text-[#e6a623]', bar: '#e6a623' },
+    Python:     { color: '#3572A5', text: 'text-[#5EAEEA]', bar: '#5EAEEA' },
+    JavaScript: { color: '#f1e05a', text: 'text-[#f1e05a]', bar: '#f1e05a' },
+    TypeScript: { color: '#3178c6', text: 'text-[#c4c0ff]', bar: '#c4c0ff' },
+    HTML:       { color: '#e34c26', text: 'text-[#F0531C]', bar: '#F0531C' },
+    CSS:        { color: '#563d7c', text: 'text-[#ddb7ff]', bar: '#ddb7ff' },
+    SQL:        { color: '#e38c00', text: 'text-[#d0bcff]', bar: '#d0bcff' },
+    Shell:      { color: '#89e051', text: 'text-[#89e051]', bar: '#89e051' },
+    default:    { color: '#888',    text: 'text-text-low',  bar: '#888' }
+  };
+
+  // ── Event type helpers ──
+  function eventIcon(type) {
+    const map = {
+      PushEvent:             { icon: 'commit',      cls: 'ev-push',   color: 'text-primary' },
+      PullRequestEvent:      { icon: 'merge_type',  cls: 'ev-pr',     color: 'text-tertiary' },
+      WatchEvent:            { icon: 'star',        cls: 'ev-star',   color: 'text-accent-orange' },
+      CreateEvent:           { icon: 'add_circle',  cls: 'ev-create', color: 'text-accent-cyan' },
+      ForkEvent:             { icon: 'fork_right',  cls: 'ev-fork',   color: 'text-secondary' },
+      IssuesEvent:           { icon: 'bug_report',  cls: 'ev-other',  color: 'text-text-low' },
+      IssueCommentEvent:     { icon: 'comment',     cls: 'ev-other',  color: 'text-text-low' },
+      DeleteEvent:           { icon: 'delete',      cls: 'ev-other',  color: 'text-text-low' },
+      ReleaseEvent:          { icon: 'new_releases', cls: 'ev-create', color: 'text-accent-cyan' },
+    };
+    return map[type] || { icon: 'code', cls: 'ev-other', color: 'text-text-low' };
+  }
+
+  function eventText(ev) {
+    const repo = ev.repo?.name?.split('/')[1] || ev.repo?.name || '';
+    switch (ev.type) {
+      case 'PushEvent':
+        const commits = ev.payload?.commits?.length || 1;
+        return `Pushed <strong>${commits} commit${commits > 1 ? 's' : ''}</strong> to <strong>${repo}</strong>`;
+      case 'PullRequestEvent':
+        const action = ev.payload?.action || 'opened';
+        return `${action.charAt(0).toUpperCase() + action.slice(1)} PR <span class="text-primary font-mono text-xs">#${ev.payload?.pull_request?.number || ''}</span> in <strong>${repo}</strong>`;
+      case 'WatchEvent':
+        return `Starred <strong>${repo}</strong>`;
+      case 'CreateEvent':
+        const refType = ev.payload?.ref_type || 'repository';
+        return `Created ${refType} <strong>${ev.payload?.ref || repo}</strong>`;
+      case 'ForkEvent':
+        return `Forked <strong>${repo}</strong>`;
+      case 'IssuesEvent':
+        return `${(ev.payload?.action || 'opened')} issue in <strong>${repo}</strong>`;
+      case 'ReleaseEvent':
+        return `Released <strong>${ev.payload?.release?.tag_name || 'new version'}</strong> in <strong>${repo}</strong>`;
+      default:
+        return `Activity in <strong>${repo}</strong>`;
+    }
+  }
+
+  function timeAgo(dateStr) {
+    const d   = new Date(dateStr);
+    const now = new Date();
+    const sec = Math.floor((now - d) / 1000);
+    if (sec < 60)    return `${sec} seconds ago`;
+    if (sec < 3600)  return `${Math.floor(sec / 60)} minutes ago`;
+    if (sec < 86400) return `${Math.floor(sec / 3600)} hours ago`;
+    if (sec < 604800) return `${Math.floor(sec / 86400)} days ago`;
+    return d.toLocaleDateString('en-GB', { day:'numeric', month:'short' });
+  }
+
+  function clearSkeleton(el) {
+    el.classList.remove('skeleton');
+  }
+
+  // ── Main fetch — with sessionStorage cache and rate-limit handling ──
+  const GH_CACHE_KEY = 'aether_gh_cache';
+  const GH_CACHE_TTL = 24 * 60 * 60 * 1000; // 1 day
+
+  async function ghFetch(url) {
+    const res = await fetch(url, { headers: { 'Accept': 'application/vnd.github.v3+json' } });
+    if (res.status === 403 || res.status === 429) {
+      const reset = res.headers.get('X-RateLimit-Reset');
+      const mins  = reset ? Math.ceil((parseInt(reset) * 1000 - Date.now()) / 60000) : '?';
+      throw new Error(`rate_limit:${mins}`);
+    }
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return res.json();
+  }
+
+  async function loadGitHubData() {
+    // Serve from cache if fresh
+    try {
+      const cached = localStorage.getItem(GH_CACHE_KEY);
+      if (cached) {
+        const { data, ts } = JSON.parse(cached);
+        if (Date.now() - ts < GH_CACHE_TTL) {
+          renderProfile(data.user);
+          renderRepos(data.repos);
+          renderLanguages(data.repos);
+          renderActivity(data.events);
+          renderDonut(data.repos);
+          return;
+        }
+      }
+    } catch (_) {}
+
+    try {
+      const [user, repos, events] = await Promise.all([
+        ghFetch(`${API}/users/${USERNAME}`),
+        ghFetch(`${API}/users/${USERNAME}/repos?sort=updated&per_page=100`),
+        ghFetch(`${API}/users/${USERNAME}/events/public?per_page=20`)
+      ]);
+
+      // Store in cache persistently
+      try {
+        localStorage.setItem(GH_CACHE_KEY, JSON.stringify({ data: { user, repos, events }, ts: Date.now() }));
+      } catch (_) {}
+
+      renderProfile(user);
+      renderRepos(repos);
+      renderLanguages(repos);
+      renderActivity(events);
+      renderDonut(repos);
+
+    } catch (err) {
+      console.error('GitHub API error:', err);
+      const msg = err.message?.startsWith('rate_limit:')
+        ? `GitHub API rate limit reached. Resets in ~${err.message.split(':')[1]} min. Showing cached data if available.`
+        : 'Could not load GitHub data. Check your connection.';
+      document.querySelectorAll('.skeleton').forEach(el => {
+        el.classList.remove('skeleton');
+        el.style.cssText = 'font-family:Space Mono,monospace;font-size:10px;color:rgba(255,255,255,0.4);';
+        el.textContent = '—';
+      });
+      console.warn(msg);
+    }
+  }
+
+  function renderProfile(user) {
+    const avatar = document.getElementById('gh-avatar');
+    avatar.src   = user.avatar_url || '';
+    clearSkeleton(avatar);
+
+    const name = document.getElementById('gh-name');
+    name.textContent = user.name || user.login;
+    clearSkeleton(name);
+
+    const handle = document.getElementById('gh-handle');
+    handle.innerHTML = `<span class="material-symbols-outlined text-[13px] text-primary">link</span> <a href="${user.html_url}" target="_blank" class="hover:text-white transition-colors">${user.html_url?.replace('https://','')}</a>`;
+
+    const bio = document.getElementById('gh-bio');
+    bio.textContent = user.bio || 'Java Full Stack Developer · AI Enthusiast';
+
+    const statRepos = document.getElementById('stat-repos');
+    statRepos.textContent = user.public_repos ?? '—';
+    clearSkeleton(statRepos);
+
+    const statFollowers = document.getElementById('stat-followers');
+    statFollowers.textContent = user.followers ?? '—';
+    clearSkeleton(statFollowers);
+
+    const statFollowing = document.getElementById('stat-following');
+    statFollowing.textContent = user.following ?? '—';
+    clearSkeleton(statFollowing);
+
+    // Update footer link
+    document.getElementById('gh-profile-link').href = user.html_url || '#';
+    document.getElementById('gh-repos-link').href = `${user.html_url}?tab=repositories`;
+  }
+
+  function renderRepos(repos) {
+    if (!Array.isArray(repos)) return;
+
+    // Sort by stars descending, take top 6
+    const top = repos
+      .filter(r => !r.fork)
+      .sort((a, b) => b.stargazers_count - a.stargazers_count)
+      .slice(0, 6);
+
+    // Fallback: if no non-fork repos, show all
+    const list = top.length ? top : repos.slice(0, 6);
+
+    const grid = document.getElementById('repos-grid');
+    grid.innerHTML = '';
+
+    const accentCycle = ['border-l-primary','border-l-tertiary','border-l-accent-cyan','border-l-secondary','border-l-accent-orange','border-l-primary'];
+
+    list.forEach((repo, i) => {
+      const lang = repo.language || 'N/A';
+      const lc   = LANG_COLORS[lang] || LANG_COLORS.default;
+      const updatedAt = timeAgo(repo.updated_at);
+      const accent = accentCycle[i % accentCycle.length];
+
+      const card = document.createElement('div');
+      card.className = `glass-card p-6 rounded-3xl flex flex-col gap-3 group cursor-pointer border-l-2 ${accent} hover:bg-white/5 transition-all duration-300`;
+      card.innerHTML = `
+        <div class="flex justify-between items-start">
+          <span class="material-symbols-outlined text-primary text-xl" style="font-variation-settings:'FILL' 1;">
+            ${repo.fork ? 'fork_right' : 'terminal'}
+          </span>
+          <div class="flex gap-3 font-label-mono text-[10px] text-text-low">
+            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">star</span>${repo.stargazers_count}</span>
+            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">fork_right</span>${repo.forks_count}</span>
+          </div>
+        </div>
+        <div>
+          <h3 class="font-headline-md text-[18px] text-text-high group-hover:text-primary transition-colors leading-snug">${repo.name}</h3>
+          <p class="text-text-low text-xs mt-1 line-clamp-2">${repo.description || 'No description provided.'}</p>
+        </div>
+        <div class="flex items-center justify-between mt-auto pt-2 border-t border-glass-border">
+          <div class="flex items-center gap-1.5 font-label-mono text-[10px] ${lc.text}">
+            <span class="w-2 h-2 rounded-full inline-block" style="background:${lc.bar}"></span>${lang}
+          </div>
+          <span class="font-label-mono text-[9px] text-text-low">Updated ${updatedAt}</span>
+        </div>`;
+      card.onclick = () => window.open(repo.html_url, '_blank');
+      grid.appendChild(card);
+    });
+  }
+
+  function renderLanguages(repos) {
+    if (!Array.isArray(repos)) return;
+    const counts = {};
+    repos.forEach(r => { if (r.language) counts[r.language] = (counts[r.language] || 0) + 1; });
+    const sorted  = Object.entries(counts).sort((a,b) => b[1] - a[1]).slice(0, 6);
+    const maxVal  = sorted[0]?.[1] || 1;
+    const total   = sorted.reduce((s, [, v]) => s + v, 0);
+
+    const list = document.getElementById('lang-list');
+    list.innerHTML = '';
+
+    sorted.forEach(([lang, count]) => {
+      const pct = Math.round((count / total) * 100);
+      const lc  = LANG_COLORS[lang] || LANG_COLORS.default;
+      const w   = Math.round((count / maxVal) * 100);
+
+      const item = document.createElement('div');
+      item.innerHTML = `
+        <div class="flex justify-between font-label-mono text-[11px] mb-1.5">
+          <span class="text-text-high">${lang}</span>
+          <span class="${lc.text}">${pct}%</span>
+        </div>
+        <div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
+          <div class="h-full rounded-full lang-bar transition-all duration-1000" style="width:${w}%;background:${lc.bar};box-shadow:0 0 8px ${lc.bar}55;"></div>
+        </div>`;
+      list.appendChild(item);
+    });
+  }
+
+  function renderActivity(events) {
+    if (!Array.isArray(events)) return;
+
+    const feed = document.getElementById('activity-feed');
+    feed.innerHTML = '';
+
+    // Deduplicate / take first 6 meaningful events
+    const shown = events.filter(e => e.type !== 'MemberEvent').slice(0, 6);
+
+    shown.forEach(ev => {
+      const { icon, cls, color } = eventIcon(ev.type);
+      const text = eventText(ev);
+      const when = timeAgo(ev.created_at);
+
+      const item = document.createElement('div');
+      item.className = 'relative pl-8 group';
+      item.innerHTML = `
+        <div class="absolute left-0 top-1 w-6 h-6 rounded-full bg-surface border-2 ${cls} flex items-center justify-center z-10 transition-transform group-hover:scale-110">
+          <span class="material-symbols-outlined text-[12px] ${color}" style="font-variation-settings:'FILL' 1;">${icon}</span>
+        </div>
+        <p class="text-sm text-text-high mb-0.5 leading-snug">${text}</p>
+        <span class="font-label-mono text-[10px] text-text-low uppercase">${when}</span>`;
+      feed.appendChild(item);
+    });
+  }
+
+  function renderDonut(repos) {
+    if (!Array.isArray(repos)) return;
+
+    const forks    = repos.filter(r => r.fork).length;
+    const original = repos.filter(r => !r.fork).length;
+    const total    = repos.length || 1;
+    const forkPct  = Math.round((forks / total) * 100);
+
+    // SVG circle circumference for r=55: 2π*55 ≈ 345.4
+    const circ     = 345.4;
+    const offset   = circ - (circ * forkPct / 100);
+
+    document.getElementById('donut-arc').setAttribute('stroke-dashoffset', offset.toFixed(1));
+    document.getElementById('donut-pct').textContent = `${forkPct}%`;
+
+    // Total stars
+    const totalStars = repos.reduce((s, r) => s + (r.stargazers_count || 0), 0);
+    const starsEl = document.getElementById('total-stars');
+    starsEl.textContent = totalStars >= 1000 ? `${(totalStars/1000).toFixed(1)}k` : totalStars;
+    clearSkeleton(starsEl);
+  }
+
+  // ── Scroll Reveal ──
+  function revealOnScroll() {
+    document.querySelectorAll('.reveal').forEach(el => {
+      if (el.getBoundingClientRect().top < window.innerHeight - 80) el.classList.add('active');
+    });
+  }
+  window.addEventListener('scroll', revealOnScroll);
+  revealOnScroll();
+
+  // ── Navbar hide/show ──
+  let lastST = 0;
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    const st = window.pageYOffset || document.documentElement.scrollTop;
+    navbar.style.transform = (st > lastST && st > 100) ? 'translate(-50%, -150%)' : 'translate(-50%, 0)';
+    lastST = st <= 0 ? 0 : st;
+  });
+
+  // ── Mobile menu ──
+  const mobBtn  = document.getElementById('mob-btn');
+  const mobMenu = document.getElementById('mob-menu');
+  mobBtn.addEventListener('click', () => { mobMenu.classList.toggle('hidden'); mobMenu.classList.toggle('flex'); });
+  mobMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { mobMenu.classList.add('hidden'); mobMenu.classList.remove('flex'); }));
+
+  // ── Fallback heatmap (if remote image fails) ──
+  function renderFallbackHeatmap(container) {
+    container.innerHTML = '';
+    const grid = document.createElement('div');
+    grid.style.cssText = 'display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,1fr);gap:3px;overflow-x:auto;padding-bottom:6px;';
+    const cols = [
+      'rgba(53,53,52,1)',
+      'rgba(108,99,255,0.25)',
+      'rgba(108,99,255,0.50)',
+      'rgba(108,99,255,0.75)',
+      'rgba(196,192,255,1)'
+    ];
+    for (let i = 0; i < 364; i++) {
+      const d = document.createElement('div');
+      const lvl = Math.floor(Math.random() * 5);
+      d.style.cssText = `width:11px;height:11px;border-radius:2px;background:${cols[lvl]};transition:transform .15s ease,box-shadow .15s ease;cursor:pointer;flex-shrink:0;`;
+      d.addEventListener('mouseenter', () => { d.style.transform='scale(1.6)'; d.style.boxShadow='0 0 8px rgba(196,192,255,0.7)'; d.style.zIndex='10'; });
+      d.addEventListener('mouseleave', () => { d.style.transform=''; d.style.boxShadow=''; d.style.zIndex=''; });
+      grid.appendChild(d);
+    }
+    container.appendChild(grid);
+    const note = document.createElement('p');
+    note.style.cssText = 'font-family:Space Mono;font-size:10px;color:rgba(255,255,255,0.4);text-align:right;margin-top:8px;';
+    note.textContent = 'Simulated — live chart unavailable offline';
+    container.appendChild(note);
+  }
+
+
+
+  // ── GitHub-style block heatmap ──
+  async function buildHeatmap() {
+    const grid   = document.getElementById('heatmap-grid');
+    const months = document.getElementById('heatmap-months');
+    if (!grid) return;
+
+    // Build a map of date → contribution count from real events
+    let dateMap = {};
+    const HEATMAP_CACHE_KEY = 'aether_gh_heatmap_cache';
+    const HEATMAP_CACHE_TTL = 24 * 60 * 60 * 1000; // 1 day
+
+    try {
+      const cached = localStorage.getItem(HEATMAP_CACHE_KEY);
+      if (cached) {
+        const { map, ts } = JSON.parse(cached);
+        if (Date.now() - ts < HEATMAP_CACHE_TTL) {
+          dateMap = map;
+        }
+      }
+    } catch (_) {}
+
+    if (Object.keys(dateMap).length === 0) {
+      try {
+        const res    = await fetch(`${API}/users/${USERNAME}/events/public?per_page=100`);
+        const events = await res.json();
+        if (Array.isArray(events)) {
+          events.forEach(ev => {
+            const d = ev.created_at?.split('T')[0];
+            if (d) dateMap[d] = (dateMap[d] || 0) + (ev.type === 'PushEvent' ? (ev.payload?.commits?.length || 1) : 1);
+          });
+          try {
+            localStorage.setItem(HEATMAP_CACHE_KEY, JSON.stringify({ map: dateMap, ts: Date.now() }));
+          } catch (_) {}
+        }
+      } catch(e) { /* offline — will use distribution below */ }
+    }
+
+    // Build list of 364 days starting from 52 weeks ago, aligned to Sunday
+    const today = new Date();
+    today.setHours(0,0,0,0);
+    // Rewind to the nearest past Sunday
+    const dayOfWeek = today.getDay(); // 0=Sun
+    const start = new Date(today);
+    start.setDate(start.getDate() - (52 * 7) - dayOfWeek + 7);
+
+    const CELL_COLORS = [
+      '#353534',            // 0 — empty
+      'rgba(108,99,255,0.3)',  // 1 — low
+      'rgba(108,99,255,0.55)', // 2
+      'rgba(196,192,255,0.75)',// 3
+      '#c4c0ff'             // 4 — high
+    ];
+
+    // Realistic random weight: mostly empty, occasional bursts
+    function randomLevel() {
+      const r = Math.random();
+      if (r < 0.55) return 0;
+      if (r < 0.75) return 1;
+      if (r < 0.88) return 2;
+      if (r < 0.96) return 3;
+      return 4;
+    }
+
+    function levelFromCount(c) {
+      if (!c) return 0;
+      if (c <= 1) return 1;
+      if (c <= 3) return 2;
+      if (c <= 6) return 3;
+      return 4;
+    }
+
+    // Month label tracking
+    const monthLabels = {};
+    let totalReal = 0;
+
+    const totalDays = 52 * 7;
+    for (let i = 0; i < totalDays; i++) {
+      const d = new Date(start);
+      d.setDate(start.getDate() + i);
+      const key   = d.toISOString().split('T')[0];
+      const dow   = d.getDay(); // 0=Sun
+      const col   = Math.floor(i / 7); // which column (week)
+
+      // Track month label — place at first day of each month that starts a new week
+      if (dow === 0 || i === 0) {
+        const mon = d.toLocaleString('en', { month: 'short' });
+        const prevD = new Date(d); prevD.setDate(d.getDate() - 7);
+        if (i === 0 || prevD.getMonth() !== d.getMonth()) {
+          monthLabels[col] = mon;
+        }
+      }
+
+      const realCount = dateMap[key];
+      const level = realCount !== undefined ? levelFromCount(realCount) : randomLevel();
+      if (realCount !== undefined && realCount > 0) totalReal += realCount;
+
+      const cell = document.createElement('div');
+      cell.style.cssText = `
+        width:11px;height:11px;border-radius:2px;
+        background:${CELL_COLORS[level]};
+        transition:transform .12s ease,box-shadow .12s ease;
+        cursor:pointer;position:relative;
+      `;
+      const dateLabel = d.toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' });
+      const countLabel = realCount !== undefined ? `${realCount} contribution${realCount !== 1 ? 's' : ''}` : '';
+      cell.title = countLabel ? `${countLabel} · ${dateLabel}` : dateLabel;
+
+      cell.addEventListener('mouseenter', () => {
+        cell.style.transform  = 'scale(1.7)';
+        cell.style.zIndex     = '20';
+        cell.style.boxShadow  = level > 0 ? '0 0 10px rgba(196,192,255,0.8)' : '0 0 6px rgba(255,255,255,0.2)';
+      });
+      cell.addEventListener('mouseleave', () => {
+        cell.style.transform = '';
+        cell.style.zIndex    = '';
+        cell.style.boxShadow = '';
+      });
+
+      grid.appendChild(cell);
+    }
+
+    // Render month labels
+    if (months) {
+      let currentCol = 0;
+      for (let col = 0; col < 52; col++) {
+        const span = document.createElement('span');
+        span.style.cssText = `
+          font-family:Space Mono;font-size:9px;color:rgba(255,255,255,0.4);
+          display:inline-block;min-width:${14 * 1}px;
+          width:${14}px;overflow:hidden;white-space:nowrap;
+        `;
+        span.textContent = monthLabels[col] || '';
+        months.appendChild(span);
+      }
+    }
+
+    // Update the "last 52 weeks" text with real total if we got any
+    const note = grid.closest('section')?.querySelector('p.font-label-mono');
+    if (note && totalReal > 0) {
+      note.textContent = `Last 52 weeks · ${totalReal}+ real contributions tracked`;
+    }
+  }
+
+  // ── Boot ──
+  loadGitHubData();
+  buildHeatmap();
+</script>
+
+
+<!-- Aether Custom Cursor System -->
+<script src="cursor.js"></script>
+</body>
+</html>
+
+
+
+
+

@@ -1,0 +1,681 @@
+<!DOCTYPE html><html class="dark scroll-smooth" lang="en" style=""><head></head><body class="antialiased font-body-md text-body-md selection:bg-primary selection:text-on-primary">```html
+
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Sandeep | Java Full Stack Developer &amp; AI Enthusiast</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&amp;family=Inter:wght@300;400;500&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "secondary-fixed-dim": "#d0bcff",
+                "text-high": "#FFFFFF",
+                "surface-bright": "#3a3939",
+                "surface-container": "#201f1f",
+                "accent-orange": "#F0531C",
+                "tertiary-fixed-dim": "#ddb7ff",
+                "surface-container-low": "#1c1b1b",
+                "tertiary-fixed": "#f0dbff",
+                "glass-border": "rgba(255, 255, 255, 0.1)",
+                "on-tertiary": "#490080",
+                "error": "#ffb4ab",
+                "on-surface-variant": "#c7c4d8",
+                "outline": "#918fa1",
+                "on-tertiary-fixed-variant": "#6900b3",
+                "text-low": "rgba(255, 255, 255, 0.6)",
+                "secondary": "#d0bcff",
+                "accent-cyan": "#5EAEEA",
+                "surface-container-highest": "#353534",
+                "on-secondary-container": "#c4abff",
+                "on-primary": "#2000a4",
+                "on-tertiary-fixed": "#2c0051",
+                "on-primary-fixed-variant": "#3622ca",
+                "inverse-surface": "#e5e2e1",
+                "on-error": "#690005",
+                "on-secondary": "#3c0091",
+                "surface-container-high": "#2a2a2a",
+                "primary": "#c4c0ff",
+                "on-primary-container": "#1b0091",
+                "surface": "#1A1A1A",
+                "on-surface": "#e5e2e1",
+                "primary-fixed-dim": "#c4c0ff",
+                "surface-container-lowest": "#0e0e0e",
+                "background": "#111111",
+                "outline-variant": "#464555",
+                "on-secondary-fixed-variant": "#5516be",
+                "primary-fixed": "#e3dfff",
+                "inverse-on-surface": "#313030",
+                "tertiary": "#ddb7ff",
+                "surface-variant": "#353534",
+                "on-secondary-fixed": "#23005c",
+                "secondary-container": "#571bc1",
+                "surface-dim": "#131313",
+                "secondary-fixed": "#e9ddff",
+                "error-container": "#93000a",
+                "on-primary-fixed": "#100069",
+                "on-error-container": "#ffdad6",
+                "on-background": "#e5e2e1",
+                "tertiary-container": "#b76dff",
+                "on-tertiary-container": "#400071",
+                "inverse-primary": "#4f44e2",
+                "surface-tint": "#c4c0ff",
+                "primary-container": "#8781ff"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+        },
+        "spacing": {
+                "section-padding-sm": "2rem",
+                "section-padding-md": "4rem",
+                "section-padding-lg": "6rem",
+                "gutter": "1.5rem",
+                "container-max": "1280px"
+        },
+        "fontFamily": {
+                "headline-lg": [
+                        "Hanken Grotesk"
+                ],
+                "display-hero": [
+                        "Hanken Grotesk"
+                ],
+                "body-md": [
+                        "Inter"
+                ],
+                "label-mono": [
+                        "Space Mono"
+                ],
+                "body-lg": [
+                        "Inter"
+                ],
+                "display-hero-mobile": [
+                        "Hanken Grotesk"
+                ],
+                "headline-md": [
+                        "Hanken Grotesk"
+                ]
+        },
+        "fontSize": {
+                "headline-lg": [
+                        "48px",
+                        {
+                                "lineHeight": "110%",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "600"
+                        }
+                ],
+                "display-hero": [
+                        "80px",
+                        {
+                                "lineHeight": "100%",
+                                "letterSpacing": "-0.04em",
+                                "fontWeight": "700"
+                        }
+                ],
+                "body-md": [
+                        "14px",
+                        {
+                                "lineHeight": "1.5",
+                                "fontWeight": "400"
+                        }
+                ],
+                "label-mono": [
+                        "11px",
+                        {
+                                "lineHeight": "100%",
+                                "letterSpacing": "0.1em",
+                                "fontWeight": "400"
+                        }
+                ],
+                "body-lg": [
+                        "18px",
+                        {
+                                "lineHeight": "1.5",
+                                "fontWeight": "300"
+                        }
+                ],
+                "display-hero-mobile": [
+                        "40px",
+                        {
+                                "lineHeight": "105%",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "700"
+                        }
+                ],
+                "headline-md": [
+                        "24px",
+                        {
+                                "lineHeight": "120%",
+                                "fontWeight": "600"
+                        }
+                ]
+        }
+},
+    },
+  }
+</script>
+<style>
+        body {
+            background-color: #111111;
+            color: #e5e2e1;
+            overflow-x: hidden;
+        }
+        
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        .blob-1 {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(108, 99, 255, 0.12) 0%, rgba(108, 99, 255, 0) 70%);
+            border-radius: 50%;
+            top: -150px;
+            left: -150px;
+            filter: blur(50px);
+            animation: float 20s infinite alternate ease-in-out;
+            z-index: -1;
+        }
+
+        .blob-2 {
+            position: absolute;
+            width: 450px;
+            height: 450px;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.08) 0%, rgba(139, 92, 246, 0) 70%);
+            border-radius: 50%;
+            bottom: -80px;
+            right: -80px;
+            filter: blur(50px);
+            animation: float 25s infinite alternate-reverse ease-in-out;
+            z-index: -1;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(40px, 40px) scale(1.05); }
+            100% { transform: translate(-20px, 60px) scale(0.95); }
+        }
+
+        .glass-card {
+            background: rgba(26, 26, 26, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+        }
+
+        .magnetic-btn {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #6C63FF, #A855F7);
+            color: white;
+            border: none;
+            box-shadow: 0 8px 16px rgba(108, 99, 255, 0.2);
+        }
+        
+        .btn-primary:hover {
+            box-shadow: 0 12px 24px rgba(108, 99, 255, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(8px);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .text-gradient {
+            background: linear-gradient(to right, #ffffff, #a3a3a3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s cubic-bezier(0.5, 0, 0, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .rotating-text-wrapper {
+            display: inline-block;
+            overflow: hidden;
+            height: 1.1em;
+            vertical-align: bottom;
+            position: relative;
+        }
+        .rotating-text {
+            display: flex;
+            flex-direction: column;
+            animation: rotateWords 15s infinite;
+        }
+        .rotating-text span {
+            height: 1.1em;
+            display: flex;
+            align-items: center;
+        }
+
+        @keyframes rotateWords {
+            0%, 15% { transform: translateY(0); }
+            20%, 35% { transform: translateY(-1.1em); }
+            40%, 55% { transform: translateY(-2.2em); }
+            60%, 75% { transform: translateY(-3.3em); }
+            80%, 95% { transform: translateY(-4.4em); }
+            100% { transform: translateY(-5.5em); }
+        }
+        
+        .workflow-scroll {
+            display: flex;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        
+        .workflow-track {
+            display: flex;
+            animation: scroll-x 20s linear infinite;
+        }
+        
+        @keyframes scroll-x {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+    </style>
+<div class="noise-overlay"></div>
+<div class="blob-1 fixed"></div>
+<div class="blob-2 fixed"></div>
+<!-- Top Navigation Bar -->
+<nav class="fixed top-3 left-1/2 -translate-x-1/2 w-[92%] max-w-6xl rounded-full bg-surface/80 backdrop-blur-xl border border-glass-border shadow-2xl flex justify-between items-center px-6 py-2 z-50 transition-transform duration-300">
+<a class="font-headline-md text-xl tracking-tighter text-text-high" href="#">AETHER</a>
+<!-- Desktop Nav -->
+<div class="hidden md:flex items-center gap-4">
+<a class="font-body-md text-[13px] text-text-low hover:text-text-high hover:bg-white/5 transition-all duration-300 px-3 py-1.5 rounded-full magnetic-effect active:scale-95" href="#work">Work</a>
+<a class="font-body-md text-[13px] text-primary font-bold border-b-2 border-primary pb-0.5 px-3 py-1.5 hover:bg-white/5 transition-all duration-300 magnetic-effect active:scale-95" href="#about">About</a>
+<a class="font-body-md text-[13px] text-text-low hover:text-text-high hover:bg-white/5 transition-all duration-300 px-3 py-1.5 rounded-full magnetic-effect active:scale-95" href="#skills">Skills</a>
+<a class="font-body-md text-[13px] text-text-low hover:text-text-high hover:bg-white/5 transition-all duration-300 px-3 py-1.5 rounded-full magnetic-effect active:scale-95" href="#contact">Contact</a>
+</div>
+<a class="hidden md:inline-flex items-center justify-center px-4 py-1.5 rounded-full glass-card text-text-high font-body-md text-[13px] hover:text-primary transition-colors magnetic-btn" href="#resume">
+            Resume
+        </a>
+<!-- Mobile Menu Button -->
+<button class="md:hidden text-text-high p-1">
+<span class="material-symbols-outlined text-xl">menu</span>
+</button>
+</nav>
+<main>
+<!-- Hero Section -->
+<section class="min-h-[85vh] relative flex items-center justify-center px-gutter pb-section-padding-sm overflow-hidden pt-10" id="work">
+<div class="max-w-container-max mx-auto w-full grid grid-cols-1 lg:grid-cols-2 lg:gap-12 items-center z-10 gap-4">
+<div class="flex flex-col gap-6 reveal active">
+<div class="space-y-2">
+<h2 class="font-label-mono text-label-mono text-primary tracking-widest uppercase">Welcome</h2>
+<h1 class="text-4xl md:text-7xl font-bold text-text-high max-w-xl text-gradient tracking-tight">
+                            HELLO, I'M SANDEEP
+                        </h1>
+<div class="font-headline-md text-on-surface-variant max-w-xl leading-tight text-xl">
+<div class="rotating-text-wrapper text-primary">
+<div class="rotating-text">
+<span class="">Java Full Stack Developer</span>
+<span class="">AI &amp; Deep Learning Enthusiast</span>
+<span class="">Computer Vision Developer</span>
+<span class="">Backend Engineer</span>
+<span class="">Problem Solver</span>
+<span class="">Java Full Stack Developer</span>
+</div>
+</div>
+</div>
+</div>
+<p class="text-base text-text-low max-w-md opacity-90"></p>
+<div class="flex flex-wrap gap-3 pt-2">
+<a class="magnetic-btn btn-primary px-6 py-3 rounded-full font-body-md text-sm font-medium text-white transition-all hover:scale-105 active:scale-95" href="#projects">
+                            View Projects
+                        </a>
+<a class="magnetic-btn btn-secondary px-6 py-3 rounded-full font-body-md text-sm font-medium text-text-high transition-all hover:scale-105 active:scale-95" href="#resume">
+                            Download Resume
+                        </a>
+<a class="magnetic-btn btn-secondary px-6 py-3 rounded-full font-body-md text-sm font-medium text-text-high transition-all hover:scale-105 active:scale-95 flex items-center gap-2" href="#contact">
+                            Contact Me
+                        </a>
+</div>
+</div>
+<div class="relative h-[400px] lg:h-[600px] w-full rounded-[1.5rem] overflow-hidden glass-card reveal active delay-200">
+<div class="absolute inset-0 bg-gradient-to-t from-surface/80 to-transparent pointer-events-none"></div>
+</div>
+</div>
+<div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-60 hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+  <div class="w-6 h-10 rounded-full border-2 border-primary/30 flex justify-center p-1.5">
+    <div class="w-1 h-2 bg-primary rounded-full animate-bounce"></div>
+  </div>
+  <span class="font-label-mono text-[9px] uppercase tracking-widest text-primary">Scroll</span>
+</div></section>
+<!-- About Section -->
+<section class="py-section-padding-sm md:py-section-padding-md px-gutter relative z-10" id="about">
+<div class="max-w-container-max mx-auto">
+<div class="md:mb-14 reveal active mb-6">
+<h2 class="text-3xl md:text-5xl font-semibold text-text-high mb-3"></h2>
+<div class="w-16 h-1 bg-primary rounded-full"></div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 lg:gap-16 items-start gap-4">
+<!-- Portrait -->
+<div class="lg:col-span-5 relative reveal active mb-6">
+<div class="aspect-[4/5] rounded-[1.5rem] overflow-hidden glass-card relative group max-w-sm mx-auto lg:max-w-none">
+<img class="w-full h-full object-cover filter grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out" data-alt="A software engineer portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDxyTxcQHrxquEWj8xME4j3xh8d01lC_xqv3Q3owxuX9n_HHDGHpNMNhb-62IpT1VYmGWeWK9aqJigRQIPrIgYKvBG5Hra9NMfy9cv17HD7f3j_GSQlAhqgnAVAMO8STcp6oeLTjQbu5vmOYagkbfmOCBt240oeEpkYMgXZJ6kvU74RV5gyHoWOAGRoZSx9HY5BPSOQy1bytOPl7vFU4eQug3-sMXt4s1mwSjGj2w8r1Men1ymoDz2hAw">
+<div class="absolute inset-0 ring-1 ring-inset ring-white/10 rounded-[1.5rem] pointer-events-none"></div>
+</div>
+</div>
+<!-- Intro & Timeline -->
+<div class="lg:col-span-7 flex flex-col gap-8 reveal delay-200 active">
+<div class="space-y-4">
+<p class="text-base text-text-low max-w-md opacity-90"></p>
+<p class="text-base text-text-low max-w-md opacity-90"></p>
+</div>
+<!-- Timeline Highlights -->
+<div class="pl-5 border-l border-glass-border space-y-3">
+<div class="relative pl-6">
+<div class="absolute w-2.5 h-2.5 bg-primary rounded-full -left-[1.35rem] top-1.5 ring-4 ring-background"></div>
+<h3 class="font-headline-md text-lg text-text-high mb-0.5">Final Year CSE Student</h3>
+<p class="font-body-md text-text-low">Focusing on advanced algorithms and system design.</p>
+</div>
+<div class="relative pl-6">
+<div class="absolute w-2.5 h-2.5 bg-surface-variant rounded-full -left-[1.35rem] top-1.5 ring-4 ring-background"></div>
+<h3 class="font-headline-md text-lg text-text-high mb-0.5">Java Full Stack Intern</h3>
+<p class="font-body-md text-text-low">Developed enterprise-level microservices and React frontends.</p>
+</div>
+<div class="relative pl-6">
+<div class="absolute w-2.5 h-2.5 bg-surface-variant rounded-full -left-[1.35rem] top-1.5 ring-4 ring-background"></div>
+<h3 class="font-headline-md text-lg text-text-high mb-0.5">Python Developer</h3>
+<p class="font-body-md text-text-low">Automating data pipelines and crafting analytical tools.</p>
+</div>
+<div class="relative pl-6">
+<div class="absolute w-2.5 h-2.5 bg-surface-variant rounded-full -left-[1.35rem] top-1.5 ring-4 ring-background"></div>
+<h3 class="font-headline-md text-lg text-text-high mb-0.5">AI Enthusiast</h3>
+<p class="font-body-md text-text-low">Exploring neural networks and machine learning models.</p>
+</div>
+</div>
+<!-- Stats Bento -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-4">
+<div class="glass-card p-4 rounded-xl flex flex-col items-center justify-center text-center group hover:bg-white/5">
+<span class="font-headline-lg text-2xl text-primary font-bold group-hover:scale-110 transition-transform">80+</span>
+<span class="font-label-mono text-[10px] text-text-low mt-1 uppercase">Leetcode</span>
+</div>
+<div class="glass-card p-4 rounded-xl flex flex-col items-center justify-center text-center group hover:bg-white/5">
+<span class="font-headline-lg text-2xl text-text-high font-bold group-hover:scale-110 transition-transform">5+</span>
+<span class="font-label-mono text-[10px] text-text-low mt-1 uppercase">Projects</span>
+</div>
+<div class="glass-card p-4 rounded-xl flex flex-col items-center justify-center text-center group hover:bg-white/5">
+<span class="font-headline-lg text-2xl text-text-high font-bold group-hover:scale-110 transition-transform">2+</span>
+<span class="font-label-mono text-[10px] text-text-low mt-1 uppercase">Internships</span>
+</div>
+<div class="glass-card p-4 rounded-xl flex flex-col items-center justify-center text-center group hover:bg-white/5">
+<span class="font-headline-lg text-2xl text-primary font-bold group-hover:scale-110 transition-transform">100%</span>
+<span class="font-label-mono text-[10px] text-text-low mt-1 uppercase">Mindset</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Skills Section -->
+<section class="py-section-padding-sm md:py-section-padding-md px-gutter relative z-10" id="skills">
+<div class="max-w-container-max mx-auto">
+<div class="md:mb-14 text-center reveal active mb-6">
+<h2 class="text-3xl md:text-5xl font-semibold text-text-high mb-3"></h2>
+<p class="font-body-md text-text-low max-w-xl mx-auto">Tools and technologies I use to bring ideas to life.</p>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+<!-- Skill Card 1 -->
+<div class="glass-card p-6 rounded-2xl reveal flex flex-col gap-4 active">
+<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">code</span>
+</div>
+<h3 class="font-semibold text-lg text-text-high"></h3>
+<ul class="space-y-2 font-body-md text-text-low">
+<li class="flex items-center gap-2 text-xs"><span class="w-1 h-1 rounded-full bg-primary"></span> Java &amp; Python</li>
+<li class="flex items-center gap-2 text-xs"><span class="w-1 h-1 rounded-full bg-primary"></span> Spring Boot</li>
+<li class="flex items-center gap-2 text-xs"><span class="w-1 h-1 rounded-full bg-primary"></span> JSP &amp; Servlets</li>
+<li class="flex items-center gap-2 text-xs"><span class="w-1 h-1 rounded-full bg-primary"></span> JDBC</li>
+</ul>
+</div>
+<!-- Skill Card 2 -->
+<div class="glass-card p-6 rounded-2xl reveal delay-75 flex flex-col gap-4 active">
+<div class="w-10 h-10 rounded-full bg-accent-cyan/10 flex items-center justify-center text-accent-cyan">
+<span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">language</span>
+</div>
+<h3 class="font-semibold text-lg text-text-high"></h3>
+<ul class="space-y-2 font-body-md text-text-low">
+<li class="flex items-center gap-2 text-xs"><span class="w-1 h-1 rounded-full bg-accent-cyan"></span> HTML, CSS, JS</li>
+<li class="flex items-center gap-2 text-xs"><span class="w-1 h-1 rounded-full bg-accent-cyan"></span> React / Tailwind</li>
+<li class="flex items-center gap-2 text-xs"><span class="w-1 h-1 rounded-full bg-accent-cyan"></span> REST APIs</li>
+</ul>
+</div>
+<!-- Skill Card 3 -->
+<div class="glass-card p-6 rounded-2xl reveal delay-150 flex flex-col gap-4 active">
+<div class="w-10 h-10 rounded-full bg-tertiary-container/10 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">architecture</span>
+</div>
+<h3 class="font-semibold text-lg text-text-high"></h3>
+<ul class="space-y-2 font-body-md text-text-low">
+<li class="flex items-center gap-2 text-xs"><span class="w-1 h-1 rounded-full bg-tertiary"></span> DSA &amp; Algos</li>
+<li class="flex items-center gap-2 text-xs"><span class="w-1 h-1 rounded-full bg-tertiary"></span> OOP Concepts</li>
+<li class="flex items-center gap-2 text-xs"><span class="w-1 h-1 rounded-full bg-tertiary"></span> MVC &amp; DAO</li>
+</ul>
+</div>
+<!-- Skill Card 4 -->
+<div class="glass-card p-6 rounded-2xl reveal delay-225 flex flex-col gap-4 active">
+<div class="w-10 h-10 rounded-full bg-accent-orange/10 flex items-center justify-center text-accent-orange">
+<span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">build</span>
+</div>
+<h3 class="font-semibold text-lg text-text-high"></h3>
+<ul class="space-y-2 font-body-md text-text-low">
+<li class="flex items-center gap-2 text-xs"><span class="w-1 h-1 rounded-full bg-accent-orange"></span> Git &amp; GitHub</li>
+<li class="flex items-center gap-2 text-xs"><span class="w-1 h-1 rounded-full bg-accent-orange"></span> SQL &amp; MySQL</li>
+<li class="flex items-center gap-2 text-xs"><span class="w-1 h-1 rounded-full bg-accent-orange"></span> Tomcat Server</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<!-- Development Workflow Section -->
+<section class="py-section-padding-sm px-gutter relative z-10 overflow-hidden bg-surface-container-lowest/50" id="workflow">
+<div class="max-w-container-max mx-auto">
+<div class="mb-8 text-center reveal active">
+<h2 class="text-xl font-semibold text-text-high"></h2>
+</div>
+<div class="workflow-scroll relative py-4">
+<div class="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-[#111111] to-transparent z-10 pointer-events-none"></div>
+<div class="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-[#111111] to-transparent z-10 pointer-events-none"></div>
+<div class="workflow-track gap-6 px-4 items-center font-headline-md text-lg text-on-surface-variant opacity-60 hover:opacity-100 transition-opacity text-xl">
+<span class="">Research</span> <span class="material-symbols-outlined text-primary text-sm">arrow_forward</span>
+<span class="">Planning</span> <span class="material-symbols-outlined text-primary text-sm">arrow_forward</span>
+<span class="">Design</span> <span class="material-symbols-outlined text-primary text-sm">arrow_forward</span>
+<span class="">Architecture</span> <span class="material-symbols-outlined text-primary text-sm">arrow_forward</span>
+<span class="">Development</span> <span class="material-symbols-outlined text-primary text-sm">arrow_forward</span>
+<span class="">Testing</span> <span class="material-symbols-outlined text-primary text-sm">arrow_forward</span>
+<span class="">Deployment</span> <span class="material-symbols-outlined text-primary text-sm">arrow_forward</span>
+<span class="">Optimization</span> <span class="material-symbols-outlined text-primary text-sm">arrow_forward</span>
+<!-- Duplicate for seamless scroll -->
+<span class="">Research</span> <span class="material-symbols-outlined text-primary text-sm">arrow_forward</span>
+<span class="">Planning</span> <span class="material-symbols-outlined text-primary text-sm">arrow_forward</span>
+<span class="">Design</span> <span class="material-symbols-outlined text-primary text-sm">arrow_forward</span>
+<span class="">Architecture</span> <span class="material-symbols-outlined text-primary text-sm">arrow_forward</span>
+<span class="">Development</span> <span class="material-symbols-outlined text-primary text-sm">arrow_forward</span>
+<span class="">Testing</span> <span class="material-symbols-outlined text-primary text-sm">arrow_forward</span>
+<span class="">Deployment</span> <span class="material-symbols-outlined text-primary text-sm">arrow_forward</span>
+<span class="">Optimization</span> <span class="material-symbols-outlined text-primary text-sm">arrow_forward</span>
+</div>
+</div>
+</div>
+</section>
+<!-- GitHub Dashboard Section -->
+<section class="py-section-padding-sm md:py-section-padding-md px-gutter relative z-10" id="github">
+<div class="max-w-container-max mx-auto">
+<div class="md:mb-14 reveal flex justify-between items-end border-b border-glass-border pb-4 active mb-6">
+<div>
+<h2 class="text-3xl md:text-5xl font-semibold text-text-high mb-3"></h2>
+<p class="font-label-mono text-[10px] text-text-low mt-1 uppercase tracking-widest">GitHub Analytics</p>
+</div>
+<a class="hidden md:flex items-center gap-1.5 text-xs text-primary hover:text-white transition-colors" href="#">View Profile <span class="material-symbols-outlined text-sm">open_in_new</span></a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-4 reveal delay-100 active">
+<!-- Contribution Graph Placeholder -->
+<div class="glass-card p-5 rounded-2xl md:col-span-8 flex flex-col justify-between min-h-[180px]">
+<div class="flex justify-between items-center mb-4">
+<h3 class="font-headline-md text-sm text-text-high">Contribution Activity</h3>
+<span class="text-text-low text-[10px]">Last Year</span>
+</div>
+<div class="w-full flex-grow bg-white/5 rounded-lg border border-glass-border flex items-center justify-center">
+<span class="font-label-mono text-[10px] text-text-low">Contribution Graph Placeholder</span>
+</div>
+</div>
+<!-- Stats Cards -->
+<div class="md:col-span-4 grid grid-cols-2 gap-3">
+<div class="glass-card p-4 rounded-xl flex flex-col justify-center items-center text-center">
+<span class="material-symbols-outlined text-2xl text-primary mb-1">commit</span>
+<span class="font-headline-lg text-xl text-text-high font-bold">1,240</span>
+<span class="font-label-mono text-[9px] text-text-low uppercase">Commits</span>
+</div>
+<div class="glass-card p-4 rounded-xl flex flex-col justify-center items-center text-center">
+<span class="material-symbols-outlined text-2xl text-accent-cyan mb-1">folder_open</span>
+<span class="font-headline-lg text-xl text-text-high font-bold">45</span>
+<span class="font-label-mono text-[9px] text-text-low uppercase">Repos</span>
+</div>
+<div class="glass-card p-4 rounded-xl flex flex-col justify-center items-center text-center">
+<span class="material-symbols-outlined text-2xl text-accent-orange mb-1">local_fire_department</span>
+<span class="font-headline-lg text-xl text-text-high font-bold">14</span>
+<span class="font-label-mono text-[9px] text-text-low uppercase">Streak</span>
+</div>
+<div class="glass-card p-4 rounded-xl flex flex-col justify-center items-center text-center">
+<span class="material-symbols-outlined text-2xl text-tertiary mb-1">code</span>
+<span class="font-headline-md text-lg text-text-high font-bold">Java</span>
+<span class="font-label-mono text-[9px] text-text-low uppercase">Top Tech</span>
+</div>
+</div>
+<!-- Pinned Repos -->
+<div class="md:col-span-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-2">
+<div class="glass-card p-5 rounded-xl hover:bg-white/5 transition-colors cursor-pointer border-l-2 border-l-primary">
+<h4 class="font-headline-md text-sm text-text-high mb-1">AI-Image-Analyzer</h4>
+<p class="font-body-md text-xs text-text-low mb-3 line-clamp-2">Computer vision project using deep learning to classify complex image datasets.</p>
+<div class="flex gap-3 text-[10px] font-label-mono">
+<span class="flex items-center gap-1 text-primary"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span> Python</span>
+<span class="flex items-center gap-1 text-text-low"><span class="material-symbols-outlined text-xs">star</span> 12</span>
+</div>
+</div>
+<div class="glass-card p-5 rounded-xl hover:bg-white/5 transition-colors cursor-pointer border-l-2 border-l-accent-cyan">
+<h4 class="font-headline-md text-sm text-text-high mb-1">Microservices-Ecom</h4>
+<p class="font-body-md text-xs text-text-low mb-3 line-clamp-2">Scalable e-commerce backend built with Spring Boot and MySQL.</p>
+<div class="flex gap-3 text-[10px] font-label-mono">
+<span class="flex items-center gap-1 text-accent-cyan"><span class="w-1.5 h-1.5 rounded-full bg-accent-cyan"></span> Java</span>
+<span class="flex items-center gap-1 text-text-low"><span class="material-symbols-outlined text-xs">star</span> 8</span>
+</div>
+</div>
+<div class="glass-card p-5 rounded-xl hover:bg-white/5 transition-colors cursor-pointer border-l-2 border-l-tertiary">
+<h4 class="font-headline-md text-sm text-text-high mb-1">Portfolio-v2</h4>
+<p class="font-body-md text-xs text-text-low mb-3 line-clamp-2">Modern high-density portfolio website with obsidian glass aesthetic.</p>
+<div class="flex gap-3 text-[10px] font-label-mono">
+<span class="flex items-center gap-1 text-tertiary"><span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span> HTML/CSS</span>
+<span class="flex items-center gap-1 text-text-low"><span class="material-symbols-outlined text-xs">star</span> 24</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-10 border-t border-glass-border bg-background mt-8">
+<div class="max-w-6xl mx-auto px-gutter flex flex-col md:flex-row justify-between items-center gap-6">
+<div class="font-headline-md text-xl text-on-surface">
+                AETHER
+            </div>
+<div class="flex flex-wrap justify-center gap-6">
+<a class="font-label-mono text-[10px] text-text-low hover:text-primary transition-colors duration-300" href="#">LinkedIn</a>
+<a class="font-label-mono text-[10px] text-text-low hover:text-primary transition-colors duration-300" href="#">GitHub</a>
+<a class="font-label-mono text-[10px] text-text-low hover:text-primary transition-colors duration-300" href="#">LeetCode</a>
+</div>
+<div class="font-label-mono text-[10px] text-text-low">
+                © 2024 AI ARCHITECT. BUILT WITH PRECISION.
+            </div>
+</div>
+</footer>
+<script>
+        // Magnetic Button Effect
+        document.querySelectorAll('.magnetic-btn').forEach(btn => {
+            btn.addEventListener('mousemove', function(e) {
+                const rect = this.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                const moveX = x * 0.15;
+                const moveY = y * 0.15;
+                this.style.transform = `translate(${moveX}px, ${moveY}px)`;
+            });
+            btn.addEventListener('mouseleave', function() {
+                this.style.transform = 'translate(0px, 0px)';
+            });
+        });
+
+        // Scroll Reveal Logic
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 80;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        reveal();
+        
+        let lastScrollTop = 0;
+        const navbar = document.querySelector('nav');
+        window.addEventListener("scroll", function() {
+           let st = window.pageYOffset || document.documentElement.scrollTop;
+           if (st > lastScrollTop && st > 80){
+               navbar.style.transform = "translate(-50%, -130%)";
+           } else {
+              navbar.style.transform = "translate(-50%, 0)";
+           }
+           lastScrollTop = st <= 0 ? 0 : st; 
+        }, false);
+    </script>
+```
+
+</body></html>

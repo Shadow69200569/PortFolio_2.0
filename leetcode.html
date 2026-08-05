@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html class="dark scroll-smooth" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sandeep | LeetCode Dashboard</title>
+<meta name="description" content="Live LeetCode activity dashboard — real stats, difficulties and recent submissions."/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;600;700;800&family=Inter:wght@300;400;500&family=Space+Mono&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script>
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "surface-container-high": "#2a2a2a",
+          "surface-container": "#201f1f",
+          "surface-container-highest": "#353534",
+          "surface-container-lowest": "#0e0e0e",
+          "background": "#111111",
+          "secondary": "#d0bcff",
+          "glass-border": "rgba(255, 255, 255, 0.1)",
+          "accent-cyan": "#5EAEEA",
+          "accent-orange": "#F0531C",
+          "text-low": "rgba(255, 255, 255, 0.6)",
+          "text-high": "#FFFFFF",
+          "primary": "#c4c0ff",
+          "tertiary": "#ddb7ff",
+          "surface": "#1A1A1A",
+          "on-surface": "#e5e2e1",
+          "on-surface-variant": "#c7c4d8",
+          "outline": "#918fa1",
+          "tertiary-container": "#b76dff"
+        },
+        fontFamily: {
+          "headline-lg": ["Hanken Grotesk"],
+          "headline-md": ["Hanken Grotesk"],
+          "body-md": ["Inter"],
+          "label-mono": ["Space Mono"],
+          "body-lg": ["Inter"],
+        },
+        spacing: { "gutter": "2rem", "container-max": "1440px", "section-padding-sm": "4rem", "section-padding-md": "8rem" }
+      }
+    }
+  }
+</script>
+<style>
+  body { background-color: #111; color: #e5e2e1; overflow-x: hidden; }
+
+  .noise-overlay {
+    position: fixed; inset: 0; pointer-events: none; z-index: 999; opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .blob { position: fixed; border-radius: 50%; pointer-events: none; filter: blur(80px); opacity: 0.12; z-index: -1; }
+
+  .glass-card {
+    background: rgba(26,26,26,0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.1);
+    transition: border-color 0.3s ease, transform 0.3s ease;
+  }
+  .glass-card:hover { border-color: rgba(255,255,255,0.25); }
+
+  /* Heatmap */
+  .h-cell {
+    width: 11px; height: 11px; border-radius: 2px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    cursor: pointer;
+  }
+  .h-cell:hover { transform: scale(1.6); z-index: 10; box-shadow: 0 0 8px rgba(196,192,255,0.7); }
+
+  /* Language bar glow */
+  .lang-bar { box-shadow: 0 0 8px rgba(196,192,255,0.3); }
+
+  /* Scroll reveal */
+  .reveal { opacity: 0; transform: translateY(24px); transition: all 0.7s cubic-bezier(0.16,1,0.3,1); }
+  .reveal.active { opacity: 1; transform: translateY(0); }
+  .d1 { transition-delay: 100ms; }
+  .d2 { transition-delay: 200ms; }
+  .d3 { transition-delay: 300ms; }
+
+  /* Skeleton loader */
+  .skeleton {
+    background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.04) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 6px;
+  }
+  @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+
+  /* Streak pulse */
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 12px rgba(196,192,255,0.25); }
+    50%       { box-shadow: 0 0 24px rgba(196,192,255,0.6); }
+  }
+  .streak-ring { animation: pulse-glow 2.5s ease-in-out infinite; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #111; }
+  ::-webkit-scrollbar-thumb { background: #353534; border-radius: 4px; }
+
+  /* Event type colors */
+  .ev-push    { border-color: #c4c0ff; }
+  .ev-pr      { border-color: #ddb7ff; }
+  .ev-star    { border-color: #F0531C; }
+  .ev-create  { border-color: #5EAEEA; }
+  .ev-fork    { border-color: #d0bcff; }
+  .ev-other   { border-color: rgba(255,255,255,0.3); }
+</style>
+</head>
+<body class="font-body-md text-body-md min-h-screen">
+<!-- Premium Scroll Progress Indicator -->
+<style id="scroll-progress-style">
+  #scroll-progress-container {
+    position: fixed;
+    top: 2%;
+    right: 8px;
+    width: 12px;
+    height: 96%;
+    background: rgba(10, 10, 20, 0.3);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 
+      0 8px 32px rgba(0, 0, 0, 0.5), 
+      inset 2px 0 3px rgba(255, 255, 255, 0.3), 
+      inset -2px 0 3px rgba(0, 0, 0, 0.5);
+    border-radius: 12px;
+    z-index: 999999;
+    overflow: hidden;
+  }
+  #scroll-progress-fill {
+    width: 100%;
+    height: 0%;
+    background: 
+      repeating-linear-gradient(45deg, rgba(255,255,255,0.08) 0px, rgba(255,255,255,0.08) 12px, rgba(255,255,255,0) 12px, rgba(255,255,255,0) 24px),
+      linear-gradient(180deg, #3d229e, #7b61ff, #e2c2ff, #7b61ff, #3d229e);
+    background-size: 100% 48px, 100% 200%;
+    animation: magma-flow 1.5s linear infinite;
+    box-shadow: 
+      0 0 16px rgba(123, 97, 255, 0.9), 
+      inset 2px 0 4px rgba(255, 255, 255, 0.9), 
+      inset -2px 0 6px rgba(61, 34, 158, 0.9);
+    border-radius: 12px;
+    will-change: height;
+    transition: height 0.1s ease-out;
+  }
+  @keyframes magma-flow {
+    0% { background-position: 0 0, 0 200%; }
+    100% { background-position: 0 48px, 0 -200%; }
+  }
+  /* Hide default browser scrollbar */
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  html {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+  }
+</style>
+<div id="scroll-progress-container">
+  <div id="scroll-progress-fill"></div>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const scrollFill = document.getElementById('scroll-progress-fill');
+    if (!scrollFill) return;
+    let ticking = false;
+    const updateScrollProgress = () => {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrollPercentage = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+      scrollFill.style.height = scrollPercentage + '%';
+      ticking = false;
+    };
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        window.requestAnimationFrame(updateScrollProgress);
+        ticking = true;
+      }
+    }, { passive: true });
+    updateScrollProgress(); // init
+  });
+</script>
+<!-- End Premium Scroll Progress Indicator -->
+
+<div class="noise-overlay"></div>
+<div class="blob w-[50vw] h-[50vw] bg-[#c4c0ff] top-[-10%] left-[-10%]"></div>
+<div class="blob w-[40vw] h-[40vw] bg-[#b76dff] bottom-[-10%] right-[-10%]"></div>
+
+<!-- ═══════ NAV ═══════ -->
+<nav id="navbar" class="fixed top-4 left-1/2 -translate-x-1/2 w-[90%] max-w-7xl rounded-full bg-surface/80 backdrop-blur-xl border border-glass-border shadow-2xl flex justify-between items-center px-8 py-3 z-50 transition-transform duration-300">
+  <a class="font-headline-md tracking-tighter text-text-high text-[24px] font-bold" href="index.html">AETHER</a>
+  <div class="hidden md:flex items-center gap-6">
+    <a class="text-text-low hover:text-text-high hover:bg-white/5 transition-all px-4 py-2 rounded-full text-sm" href="index.html#hero">Home</a>
+    <a class="text-text-low hover:text-text-high hover:bg-white/5 transition-all px-4 py-2 rounded-full text-sm" href="index.html#about">About</a>
+    <a class="text-text-low hover:text-text-high hover:bg-white/5 transition-all px-4 py-2 rounded-full text-sm" href="projects.html">Work</a>
+    <a class="text-text-low hover:text-text-high hover:bg-white/5 transition-all px-4 py-2 rounded-full text-sm" href="certificates.html">Certificates</a>
+    <a class="text-text-low hover:text-text-high hover:bg-white/5 transition-all px-4 py-2 rounded-full text-sm" href="github.html">GitHub</a>
+    <a class="text-primary font-bold border-b border-primary pb-0.5 px-4 py-2 text-sm" href="leetcode.html">LeetCode</a>
+  </div>
+  <a id="lc-profile-link" href="https://leetcode.com/u/08E4aDwjHC/" target="_blank" rel="noopener"
+     class="hidden md:inline-flex items-center gap-2 px-5 py-2 rounded-full text-white text-xs font-mono bg-gradient-to-r from-[#6C63FF] to-[#A855F7] hover:shadow-lg transition-all">
+    <span class="material-symbols-outlined text-[16px]">open_in_new</span> View Profile
+  </a>
+  <button id="mob-btn" class="md:hidden text-text-high"><span class="material-symbols-outlined">menu</span></button>
+</nav>
+
+<!-- Mobile menu -->
+<div id="mob-menu" class="fixed inset-x-4 top-20 z-40 hidden glass-card rounded-2xl p-6 flex-col gap-3">
+  <a class="text-text-low py-2 border-b border-glass-border hover:text-text-high text-sm" href="index.html">Home</a>
+  <a class="text-text-low py-2 border-b border-glass-border hover:text-text-high text-sm" href="index.html#about">About</a>
+  <a class="text-text-low py-2 border-b border-glass-border hover:text-text-high text-sm" href="projects.html">Work</a>
+  <a class="text-text-low py-2 border-b border-glass-border hover:text-text-high text-sm" href="certificates.html">Certificates</a>
+  <a class="text-text-low py-2 border-b border-glass-border hover:text-text-high text-sm" href="github.html">GitHub</a>
+  <a class="text-primary font-bold py-2 border-b border-glass-border text-sm" href="leetcode.html">LeetCode</a>
+</div>
+
+<main class="relative pt-32 pb-section-padding-md px-gutter max-w-container-max mx-auto space-y-8">
+  <!-- ── Profile Header ── -->
+  <section class="reveal d1 glass-card rounded-3xl p-card-padding flex flex-col md:flex-row items-center gap-8 md:gap-12 relative overflow-hidden">
+    <div class="blob w-64 h-64 bg-accent-orange/20 top-0 left-0"></div>
+    <div class="relative w-32 h-32 md:w-48 md:h-48 flex-shrink-0">
+      <div class="absolute inset-0 rounded-full border border-glass-border"></div>
+      <img src="https://assets.leetcode.com/users/08E4aDwjHC/avatar_1736690500.png" alt="Sandeep LeetCode Avatar" class="w-full h-full rounded-full object-cover relative z-10 p-2">
+      <div class="absolute inset-0 rounded-full border-[2px] border-transparent border-t-accent-cyan/50 border-r-accent-cyan/50 animate-spin-slow"></div>
+    </div>
+    <div class="flex-1 text-center md:text-left z-10">
+      <h1 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-text-high mb-2 tracking-tight">Sandeep</h1>
+      <p class="font-body-lg text-body-lg text-text-low mb-6 max-w-2xl">
+        Level 42 Architect <span class="text-accent-cyan">@LeetCode</span>
+      </p>
+      <div class="flex flex-wrap justify-center md:justify-start gap-3">
+        <a href="https://leetcode.com/u/08E4aDwjHC/" target="_blank" rel="noopener" class="px-6 py-2 rounded-full border border-glass-border text-text-high hover:bg-white/5 transition-all text-sm font-semibold flex items-center gap-2">
+          View Profile <span class="material-symbols-outlined text-[18px]">open_in_new</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Stats Overview ── -->
+  <section class="reveal d2 grid grid-cols-2 md:grid-cols-4 gap-4">
+    <div class="glass-card rounded-2xl p-6 flex flex-col items-center justify-center text-center group">
+      <span class="material-symbols-outlined text-accent-cyan text-3xl mb-3 group-hover:scale-110 transition-transform">task_alt</span>
+      <span class="font-headline-md text-3xl font-bold text-text-high mb-1" id="total-solved-text">0</span>
+      <span class="font-body-md text-text-low text-sm">Total Solved</span>
+    </div>
+    <div class="glass-card rounded-2xl p-6 flex flex-col items-center justify-center text-center group">
+      <span class="material-symbols-outlined text-accent-orange text-3xl mb-3 group-hover:scale-110 transition-transform">trophy</span>
+      <span class="font-headline-md text-3xl font-bold text-text-high mb-1" id="global-rank-text">0</span>
+      <span class="font-body-md text-text-low text-sm">Global Rank</span>
+    </div>
+    <div class="glass-card rounded-2xl p-6 flex flex-col items-center justify-center text-center group">
+      <span class="material-symbols-outlined text-green-400 text-3xl mb-3 group-hover:scale-110 transition-transform">check_circle</span>
+      <span class="font-headline-md text-3xl font-bold text-green-400 mb-1" id="ac-submissions-text">0</span>
+      <span class="font-body-md text-text-low text-sm">Total Submissions</span>
+    </div>
+    <div class="glass-card rounded-2xl p-6 flex flex-col items-center justify-center text-center group">
+      <span class="material-symbols-outlined text-secondary text-3xl mb-3 group-hover:scale-110 transition-transform">stars</span>
+      <span class="font-headline-md text-3xl font-bold text-secondary mb-1">Actv</span>
+      <span class="font-body-md text-text-low text-sm">Status</span>
+    </div>
+  </section>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- ── Left Column: Recent Submissions ── -->
+    <div class="lg:col-span-2 flex flex-col gap-6">
+      <section class="reveal d3 glass-card rounded-2xl p-6 md:p-8 flex-1">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="font-headline-md text-2xl text-text-high flex items-center gap-2">
+            <span class="material-symbols-outlined text-accent-orange">history</span> Recent Submissions
+          </h2>
+        </div>
+        <div class="flex flex-col gap-2" id="recent-submissions-container">
+          <div class="grid grid-cols-12 gap-4 px-4 py-2 border-b border-glass-border/50 text-text-low text-sm">
+            <div class="col-span-8">Problem</div>
+            <div class="col-span-4 text-right">Time</div>
+          </div>
+          <div id="submissions-list">
+              <!-- JS Injected rows will go here -->
+              <div class="p-8 text-center text-text-low skeleton">Loading submissions...</div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ── Right Column: Difficulty Breakdown ── -->
+    <div class="flex flex-col gap-6">
+      <section class="reveal d3 glass-card rounded-2xl p-6 md:p-8 hover:border-glass-border/50 transition-colors">
+        <h2 class="font-headline-md text-xl text-text-high mb-6 flex items-center gap-2">
+          <span class="material-symbols-outlined text-accent-cyan">donut_large</span> Difficulty Breakdown
+        </h2>
+        
+        <div class="flex flex-col gap-6">
+          <!-- Easy -->
+          <div class="flex items-center gap-4">
+            <div class="relative w-16 h-16 flex-shrink-0">
+              <svg class="w-full h-full -rotate-90" viewbox="0 0 100 100">
+                <circle cx="50" cy="50" fill="transparent" r="40" stroke="rgba(255,255,255,0.1)" stroke-width="8"></circle>
+                <circle id="easy-circle" class="transition-all duration-1000" cx="50" cy="50" fill="transparent" r="40" stroke="#4ade80" stroke-width="8" style="stroke-dasharray: 251.2; stroke-dashoffset: 251.2;"></circle>
+              </svg>
+              <div id="easy-count" class="absolute inset-0 flex items-center justify-center text-text-high text-sm font-bold">0</div>
+            </div>
+            <div class="flex-1">
+              <div class="flex justify-between mb-2">
+                <span class="text-text-high font-medium">Easy</span>
+                <span id="easy-percentage" class="text-text-low text-sm">0%</span>
+              </div>
+              <div class="w-full h-2 bg-white/5 rounded-full overflow-hidden">
+                <div id="easy-bar" class="h-full bg-[#4ade80] rounded-full transition-all duration-1000" style="width: 0%"></div>
+              </div>
+            </div>
+          </div>
+          <!-- Medium -->
+          <div class="flex items-center gap-4">
+            <div class="relative w-16 h-16 flex-shrink-0">
+              <svg class="w-full h-full -rotate-90" viewbox="0 0 100 100">
+                <circle cx="50" cy="50" fill="transparent" r="40" stroke="rgba(255,255,255,0.1)" stroke-width="8"></circle>
+                <circle id="medium-circle" class="transition-all duration-1000" cx="50" cy="50" fill="transparent" r="40" stroke="#facc15" stroke-width="8" style="stroke-dasharray: 251.2; stroke-dashoffset: 251.2;"></circle>
+              </svg>
+              <div id="medium-count" class="absolute inset-0 flex items-center justify-center text-text-high text-sm font-bold">0</div>
+            </div>
+            <div class="flex-1">
+              <div class="flex justify-between mb-2">
+                <span class="text-text-high font-medium">Medium</span>
+                <span id="medium-percentage" class="text-text-low text-sm">0%</span>
+              </div>
+              <div class="w-full h-2 bg-white/5 rounded-full overflow-hidden">
+                <div id="medium-bar" class="h-full bg-[#facc15] rounded-full transition-all duration-1000" style="width: 0%"></div>
+              </div>
+            </div>
+          </div>
+          <!-- Hard -->
+          <div class="flex items-center gap-4">
+            <div class="relative w-16 h-16 flex-shrink-0">
+              <svg class="w-full h-full -rotate-90" viewbox="0 0 100 100">
+                <circle cx="50" cy="50" fill="transparent" r="40" stroke="rgba(255,255,255,0.1)" stroke-width="8"></circle>
+                <circle id="hard-circle" class="transition-all duration-1000" cx="50" cy="50" fill="transparent" r="40" stroke="#f87171" stroke-width="8" style="stroke-dasharray: 251.2; stroke-dashoffset: 251.2;"></circle>
+              </svg>
+              <div id="hard-count" class="absolute inset-0 flex items-center justify-center text-text-high text-sm font-bold">0</div>
+            </div>
+            <div class="flex-1">
+              <div class="flex justify-between mb-2">
+                <span class="text-text-high font-medium">Hard</span>
+                <span id="hard-percentage" class="text-text-low text-sm">0%</span>
+              </div>
+              <div class="w-full h-2 bg-white/5 rounded-full overflow-hidden">
+                <div id="hard-bar" class="h-full bg-[#f87171] rounded-full transition-all duration-1000" style="width: 0%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>
+
+<!-- ═══════ FOOTER ═══════ -->
+<footer class="w-full bg-background mt-10">
+  <div class="h-[1px] w-full" style="background:linear-gradient(to right,transparent,#6C63FF 30%,#A855F7 70%,transparent);"></div>
+  <div class="max-w-7xl mx-auto px-gutter py-10 flex flex-col md:flex-row justify-between items-center gap-6">
+    <span style="font-family:'Hanken Grotesk',sans-serif;font-size:22px;font-weight:700;letter-spacing:-0.04em;color:#FFFFFF;-webkit-text-fill-color:#FFFFFF;">AETHER</span>
+    <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.1em;color:rgba(255,255,255,0.4);">© 2026 SANDEEP. BUILT WITH PRECISION.</span>
+    <div class="flex flex-wrap justify-center gap-6">
+      <a style="font-family:'Space Mono',monospace;font-size:11px;color:rgba(255,255,255,0.5);text-decoration:none;transition:color .3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'" href="https://github.com/Shadow69200569" target="_blank" rel="noopener">GitHub</a>
+      <a style="font-family:'Space Mono',monospace;font-size:11px;color:rgba(255,255,255,0.5);text-decoration:none;transition:color .3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'" href="projects.html">Work</a>
+      <a style="font-family:'Space Mono',monospace;font-size:11px;color:rgba(255,255,255,0.5);text-decoration:none;transition:color .3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'" href="index.html">Home</a>
+    </div>
+  </div>
+</footer>
+
+
+
+<script>
+  // Setup reveal observer
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('active');
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Mobile menu toggle
+  const mobBtn = document.getElementById('mob-btn');
+  const mobMenu = document.getElementById('mob-menu');
+  if(mobBtn && mobMenu) {
+    mobBtn.addEventListener('click', () => {
+      mobMenu.classList.toggle('hidden');
+      mobMenu.classList.toggle('flex');
+    });
+  }
+
+  // LeetCode API Integration — with retry, backoff and sessionStorage cache
+  const username       = '08E4aDwjHC';
+  const BASE           = `https://alfa-leetcode-api.onrender.com/${username}`;
+  const profileApi     = BASE;
+  const solvedApi      = `${BASE}/solved`;
+  const submissionsApi = `${BASE}/acSubmission`;
+  const CACHE_KEY      = 'aether_lc_cache';
+  const CACHE_TTL      = 24 * 60 * 60 * 1000; // 1 day
+
+  async function fetchWithRetry(url, retries = 4, delay = 2000) {
+    for (let i = 0; i <= retries; i++) {
+      try {
+        const res = await fetch(url);
+        if (res.status === 429) {
+          if (i < retries) {
+            await new Promise(r => setTimeout(r, delay * Math.pow(2, i)));
+            continue;
+          }
+          throw new Error('Rate limited');
+        }
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return await res.json();
+      } catch (e) {
+        if (i === retries) throw e;
+        await new Promise(r => setTimeout(r, delay * Math.pow(1.5, i)));
+      }
+    }
+  }
+
+  function showLoading(msg = 'Connecting to LeetCode API…') {
+    const subList = document.getElementById('submissions-list');
+    if (subList) subList.innerHTML = `<div class="p-8 text-center text-text-low font-label-mono text-xs animate-pulse">${msg}</div>`;
+  }
+
+  async function fetchLeetCodeData() {
+    // Check persistent cache first
+    try {
+      const cached = localStorage.getItem(CACHE_KEY);
+      if (cached) {
+        const { data, ts } = JSON.parse(cached);
+        if (Date.now() - ts < CACHE_TTL) {
+          updateDashboard(data.profile, data.solved, data.submissions);
+          return;
+        }
+      }
+    } catch (_) {}
+
+    showLoading('Loading live LeetCode data…');
+
+    try {
+      // Fetch sequentially to avoid hammering the free API
+      const profileData     = await fetchWithRetry(profileApi);
+      showLoading('Fetching solve stats…');
+      const solvedData      = await fetchWithRetry(solvedApi);
+      showLoading('Fetching recent submissions…');
+      const subData         = await fetchWithRetry(submissionsApi);
+
+      // Cache result persistently
+      try {
+        localStorage.setItem(CACHE_KEY, JSON.stringify({
+          data: { profile: profileData, solved: solvedData, submissions: subData },
+          ts: Date.now()
+        }));
+      } catch (_) {}
+
+      updateDashboard(profileData, solvedData, subData);
+    } catch (error) {
+      console.error('LeetCode data error:', error);
+      const subList = document.getElementById('submissions-list');
+      if (subList) subList.innerHTML = '<div class="p-8 text-center text-text-low font-label-mono text-xs">The LeetCode API is temporarily rate-limited. Data will auto-refresh — please wait a moment and reload.</div>';
+    }
+  }
+
+  function updateDashboard(profile, stats, submissions) {
+      // Stats
+      document.getElementById('total-solved-text').innerText = stats.solvedProblem || 0;
+      document.getElementById('global-rank-text').innerText = (profile.ranking || 0).toLocaleString();
+      
+      const totalSub = stats.totalSubmissionNum?.find(s => s.difficulty === 'All')?.submissions || 0;
+      document.getElementById('ac-submissions-text').innerText = totalSub.toLocaleString();
+
+      // Difficulties
+      const totalSolved = stats.solvedProblem || 1; // Prevent div by zero
+      
+      const diffs = [
+          { name: 'easy', count: stats.easySolved || 0 },
+          { name: 'medium', count: stats.mediumSolved || 0 },
+          { name: 'hard', count: stats.hardSolved || 0 }
+      ];
+
+      diffs.forEach(diff => {
+          const percent = Math.round((diff.count / totalSolved) * 100) || 0;
+          document.getElementById(`${diff.name}-count`).innerText = diff.count;
+          document.getElementById(`${diff.name}-percentage`).innerText = `${percent}%`;
+          document.getElementById(`${diff.name}-bar`).style.width = `${percent}%`;
+          
+          // Circle offset logic
+          const circum = 251.2;
+          const offset = circum - (percent / 100) * circum;
+          document.getElementById(`${diff.name}-circle`).style.strokeDashoffset = offset;
+      });
+
+      // Submissions
+      const subList = document.getElementById('submissions-list');
+      subList.innerHTML = ''; // clear loading state
+      
+      if (submissions && submissions.submission && submissions.submission.length > 0) {
+          const top10 = submissions.submission.slice(0, 10);
+          top10.forEach(sub => {
+              const date = new Date(sub.timestamp * 1000);
+              const now = new Date();
+              const diffMs = now - date;
+              const diffMins = Math.floor(diffMs / 60000);
+              const diffHrs = Math.floor(diffMins / 60);
+              const diffDays = Math.floor(diffHrs / 24);
+              let timeStr = '';
+              if (diffDays > 0) timeStr = `${diffDays} days ago`;
+              else if (diffHrs > 0) timeStr = `${diffHrs} hrs ago`;
+              else timeStr = `${diffMins} mins ago`;
+
+              const row = document.createElement('a');
+              row.href = `https://leetcode.com/problems/${sub.titleSlug}/`;
+              row.target = "_blank";
+              row.className = 'grid grid-cols-12 gap-4 px-4 py-3 bg-white/5 rounded-lg hover:bg-white/10 transition-colors items-center group mb-2 border border-glass-border/50';
+              
+              row.innerHTML = `
+                  <div class="col-span-8 font-body-md text-text-high flex items-center gap-3 truncate">
+                      <span class="material-symbols-outlined text-green-400 text-[18px]">check_circle</span>
+                      <span class="group-hover:text-accent-cyan transition-colors truncate">${sub.title}</span>
+                  </div>
+                  <div class="col-span-4 text-right font-label-sm text-text-low text-sm">${timeStr}</div>
+              `;
+              subList.appendChild(row);
+          });
+      } else {
+          subList.innerHTML = '<div class="p-8 text-center text-text-low">No recent submissions found.</div>';
+      }
+  }
+
+  // Initialize
+  fetchLeetCodeData();
+</script>
+
+
+<!-- Aether Custom Cursor System -->
+<script src="cursor.js"></script>
+</body>
+</html>
+
+
+
+
+

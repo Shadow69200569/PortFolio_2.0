@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html class="dark scroll-smooth" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sandeep | Projects &amp; Experience</title>
+<meta name="description" content="Sandeep's project portfolio and professional experience — Java Full Stack, AI, Computer Vision and more."/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@600;700&family=Inter:wght@300;400&family=Space+Mono:wght@400&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "on-secondary-fixed-variant": "#5516be",
+          "on-surface": "#e5e2e1",
+          "on-tertiary-container": "#400071",
+          "inverse-on-surface": "#313030",
+          "secondary-fixed": "#e9ddff",
+          "surface": "#1A1A1A",
+          "on-secondary-fixed": "#23005c",
+          "primary-fixed-dim": "#c4c0ff",
+          "tertiary": "#ddb7ff",
+          "secondary-fixed-dim": "#d0bcff",
+          "primary-container": "#8781ff",
+          "primary": "#c4c0ff",
+          "on-tertiary": "#490080",
+          "surface-variant": "#353534",
+          "on-tertiary-fixed": "#2c0051",
+          "on-error-container": "#ffdad6",
+          "surface-dim": "#131313",
+          "tertiary-fixed": "#f0dbff",
+          "surface-container-low": "#1c1b1b",
+          "surface-container-high": "#2a2a2a",
+          "background": "#111111",
+          "on-surface-variant": "#c7c4d8",
+          "surface-container-lowest": "#0e0e0e",
+          "secondary-container": "#571bc1",
+          "outline-variant": "#464555",
+          "surface-container": "#201f1f",
+          "surface-container-highest": "#353534",
+          "error": "#ffb4ab",
+          "glass-border": "rgba(255, 255, 255, 0.1)",
+          "accent-orange": "#F0531C",
+          "text-low": "rgba(255, 255, 255, 0.6)",
+          "surface-bright": "#3a3939",
+          "on-primary-fixed": "#100069",
+          "outline": "#918fa1",
+          "on-primary": "#2000a4",
+          "on-secondary-container": "#c4abff",
+          "error-container": "#93000a",
+          "on-primary-fixed-variant": "#3622ca",
+          "on-tertiary-fixed-variant": "#6900b3",
+          "tertiary-fixed-dim": "#ddb7ff",
+          "secondary": "#d0bcff",
+          "inverse-primary": "#4f44e2",
+          "accent-cyan": "#5EAEEA",
+          "on-error": "#690005",
+          "text-high": "#FFFFFF",
+          "on-background": "#e5e2e1",
+          "primary-fixed": "#e3dfff",
+          "on-primary-container": "#1b0091",
+          "surface-tint": "#c4c0ff",
+          "on-secondary": "#3c0091",
+          "tertiary-container": "#b76dff",
+          "inverse-surface": "#e5e2e1"
+        },
+        borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+        spacing: {
+          "section-padding-lg": "12rem",
+          "gutter": "2rem",
+          "section-padding-sm": "4rem",
+          "section-padding-md": "8rem",
+          "container-max": "1440px"
+        },
+        fontFamily: {
+          "headline-lg": ["Hanken Grotesk"],
+          "display-hero": ["Hanken Grotesk"],
+          "body-md": ["Inter"],
+          "headline-md": ["Hanken Grotesk"],
+          "label-mono": ["Space Mono"],
+          "body-lg": ["Inter"],
+          "display-hero-mobile": ["Hanken Grotesk"]
+        },
+        fontSize: {
+          "headline-lg": ["64px", { lineHeight: "120%", letterSpacing: "-0.02em", fontWeight: "600" }],
+          "display-hero": ["120px", { lineHeight: "110%", letterSpacing: "-0.04em", fontWeight: "700" }],
+          "body-md": ["16px", { lineHeight: "1.6", fontWeight: "400" }],
+          "headline-md": ["32px", { lineHeight: "130%", fontWeight: "600" }],
+          "label-mono": ["12px", { lineHeight: "100%", letterSpacing: "0.1em", fontWeight: "400" }],
+          "body-lg": ["20px", { lineHeight: "1.6", fontWeight: "300" }],
+          "display-hero-mobile": ["48px", { lineHeight: "110%", letterSpacing: "-0.02em", fontWeight: "700" }]
+        }
+      }
+    }
+  }
+</script>
+<style>
+  body {
+    background-color: #111111;
+    color: #e5e2e1;
+    overflow-x: hidden;
+  }
+
+  .noise-overlay {
+    position: fixed; top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    pointer-events: none; z-index: 999; opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  }
+
+  .glass-panel {
+    background-color: rgba(26, 26, 26, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .glass-panel:hover { border-color: rgba(255, 255, 255, 0.3); }
+
+  .ambient-glow {
+    position: fixed; width: 60vw; height: 60vw;
+    background: radial-gradient(circle, rgba(108,99,255,0.15) 0%, rgba(17,17,17,0) 70%);
+    border-radius: 50%; pointer-events: none; z-index: -1; filter: blur(60px);
+  }
+
+  .ambient-glow-secondary {
+    position: fixed; width: 50vw; height: 50vw;
+    background: radial-gradient(circle, rgba(168,85,247,0.1) 0%, rgba(17,17,17,0) 70%);
+    border-radius: 50%; pointer-events: none; z-index: -1; filter: blur(60px);
+  }
+
+  .magnetic-btn {
+    position: relative; overflow: hidden;
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .magnetic-btn::after {
+    content: ''; position: absolute; top: 50%; left: 50%;
+    width: 150%; height: 150%;
+    background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 60%);
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform 0.5s ease-out; pointer-events: none;
+  }
+
+  .magnetic-btn:hover::after { transform: translate(-50%, -50%) scale(1); }
+
+  /* Timeline */
+  .timeline-line {
+    position: absolute; left: 0; top: 0; bottom: 0; width: 1px;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0.1) 100%);
+  }
+
+  @media (min-width: 768px) {
+    .timeline-line { left: 50%; transform: translateX(-50%); }
+  }
+
+  /* Marquee */
+  @keyframes marquee-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  .marquee-track {
+    display: flex; width: max-content;
+    animation: marquee-scroll 40s linear infinite;
+  }
+
+  .marquee-track:hover { animation-play-state: paused; }
+
+  /* Scroll Reveal */
+  .reveal {
+    opacity: 0; transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .reveal.active { opacity: 1; transform: translateY(0); }
+
+  .delay-100 { transition-delay: 100ms; }
+  .delay-200 { transition-delay: 200ms; }
+  .delay-300 { transition-delay: 300ms; }
+</style>
+</head>
+<body class="antialiased selection:bg-primary/30 selection:text-primary min-h-screen flex flex-col relative">
+<!-- Premium Scroll Progress Indicator -->
+<style id="scroll-progress-style">
+  #scroll-progress-container {
+    position: fixed;
+    top: 2%;
+    right: 8px;
+    width: 12px;
+    height: 96%;
+    background: rgba(10, 10, 20, 0.3);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 
+      0 8px 32px rgba(0, 0, 0, 0.5), 
+      inset 2px 0 3px rgba(255, 255, 255, 0.3), 
+      inset -2px 0 3px rgba(0, 0, 0, 0.5);
+    border-radius: 12px;
+    z-index: 999999;
+    overflow: hidden;
+  }
+  #scroll-progress-fill {
+    width: 100%;
+    height: 0%;
+    background: 
+      repeating-linear-gradient(45deg, rgba(255,255,255,0.08) 0px, rgba(255,255,255,0.08) 12px, rgba(255,255,255,0) 12px, rgba(255,255,255,0) 24px),
+      linear-gradient(180deg, #3d229e, #7b61ff, #e2c2ff, #7b61ff, #3d229e);
+    background-size: 100% 48px, 100% 200%;
+    animation: magma-flow 1.5s linear infinite;
+    box-shadow: 
+      0 0 16px rgba(123, 97, 255, 0.9), 
+      inset 2px 0 4px rgba(255, 255, 255, 0.9), 
+      inset -2px 0 6px rgba(61, 34, 158, 0.9);
+    border-radius: 12px;
+    will-change: height;
+    transition: height 0.1s ease-out;
+  }
+  @keyframes magma-flow {
+    0% { background-position: 0 0, 0 200%; }
+    100% { background-position: 0 48px, 0 -200%; }
+  }
+  /* Hide default browser scrollbar */
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  html {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+  }
+</style>
+<div id="scroll-progress-container">
+  <div id="scroll-progress-fill"></div>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const scrollFill = document.getElementById('scroll-progress-fill');
+    if (!scrollFill) return;
+    let ticking = false;
+    const updateScrollProgress = () => {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrollPercentage = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+      scrollFill.style.height = scrollPercentage + '%';
+      ticking = false;
+    };
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        window.requestAnimationFrame(updateScrollProgress);
+        ticking = true;
+      }
+    }, { passive: true });
+    updateScrollProgress(); // init
+  });
+</script>
+<!-- End Premium Scroll Progress Indicator -->
+
+<div class="noise-overlay"></div>
+<div class="ambient-glow top-0 left-0 -translate-x-1/4 -translate-y-1/4"></div>
+<div class="ambient-glow-secondary bottom-0 right-0 translate-x-1/4 translate-y-1/4"></div>
+
+<!-- ═══════════════════ NAVIGATION ═══════════════════ -->
+<nav id="navbar" class="fixed top-4 left-1/2 -translate-x-1/2 w-[90%] max-w-7xl rounded-full bg-surface/80 backdrop-blur-xl border border-glass-border shadow-2xl flex justify-between items-center px-8 py-3 z-50 transition-transform duration-300">
+  <a class="font-headline-md text-headline-md tracking-tighter text-text-high" href="index.html">AETHER</a>
+
+  <!-- Desktop Nav -->
+  <div class="hidden md:flex items-center gap-8">
+    <a class="font-body-md text-body-md text-text-low hover:text-text-high hover:bg-white/5 transition-all duration-300 px-4 py-2 rounded-full" href="index.html#hero">Home</a>
+    <a class="font-body-md text-body-md text-text-low hover:text-text-high hover:bg-white/5 transition-all duration-300 px-4 py-2 rounded-full" href="index.html#about">About</a>
+    <a class="font-body-md text-body-md text-text-low hover:text-text-high hover:bg-white/5 transition-all duration-300 px-4 py-2 rounded-full" href="index.html#skills">Skills</a>
+    <a class="font-body-md text-body-md text-primary font-bold border-b border-primary pb-1 px-4 py-2 hover:bg-white/5 transition-all duration-300" href="projects.html">Work</a>
+    <a class="font-body-md text-body-md text-text-low hover:text-text-high hover:bg-white/5 transition-all duration-300 px-4 py-2 rounded-full" href="certificates.html">Certificates</a>
+    <a class="font-body-md text-body-md text-text-low hover:text-text-high hover:bg-white/5 transition-all duration-300 px-4 py-2 rounded-full" href="github.html">GitHub</a>
+    <a class="font-body-md text-body-md text-text-low hover:text-text-high hover:bg-white/5 transition-all duration-300 px-4 py-2 rounded-full" href="leetcode.html">LeetCode</a>
+  </div>
+
+  <button class="bg-gradient-to-r from-[#6C63FF] to-[#A855F7] text-white px-6 py-2 rounded-full font-label-mono text-label-mono hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)] transition-all duration-300 magnetic-btn hidden md:block">Resume</button>
+
+  <!-- Mobile -->
+  <button id="mobile-menu-btn" class="md:hidden text-text-high" aria-label="Toggle menu">
+    <span class="material-symbols-outlined">menu</span>
+  </button>
+</nav>
+
+<!-- Mobile Menu -->
+<div id="mobile-menu" class="fixed inset-x-4 top-20 z-40 hidden glass-panel rounded-2xl p-6 flex-col gap-4">
+  <a class="font-body-md text-text-low py-2 border-b border-glass-border hover:text-text-high" href="index.html">Home</a>
+  <a class="font-body-md text-text-low py-2 border-b border-glass-border hover:text-text-high" href="index.html#about">About</a>
+  <a class="font-body-md text-text-low py-2 border-b border-glass-border hover:text-text-high" href="index.html#skills">Skills</a>
+  <a class="font-body-md text-primary font-bold py-2 border-b border-glass-border" href="projects.html">Work</a>
+  <a class="font-body-md text-text-low py-2 border-b border-glass-border hover:text-text-high" href="certificates.html">Certificates</a>
+  <a class="font-body-md text-text-low py-2 border-b border-glass-border hover:text-text-high" href="github.html">GitHub</a>
+  <a class="font-body-md text-text-low py-2 border-b border-glass-border hover:text-text-high" href="leetcode.html">LeetCode</a>
+</div>
+
+<!-- ═══════════════════ MAIN CONTENT ═══════════════════ -->
+<main class="flex-grow pt-section-padding-sm md:pt-section-padding-lg pb-section-padding-md">
+
+
+
+  <!-- ── Projects ── -->
+  <section class="max-w-container-max mx-auto px-gutter mb-section-padding-lg" id="projects">
+    <div class="reveal">
+      <h2 class="font-headline-lg text-text-high mb-4 text-center" style="font-size: clamp(40px, 5vw, 64px);">Selected Works</h2>
+      <div class="w-24 h-1 bg-primary rounded-full mx-auto mb-16"></div>
+    </div>
+
+    <!-- Featured Project: Luxe Bites -->
+    <div class="project-hover-trigger glass-panel rounded-2xl overflow-hidden flex flex-col lg:flex-row group hover:border-white/30 transition-all duration-500 reveal mb-12" data-video="project_videos/Luxe_Bites.mp4">
+      <div class="relative w-full lg:w-1/2 min-h-[300px] lg:min-h-full overflow-hidden">
+        <img src="project_images/Luxe_Bites.png"
+             alt="Luxe Bites e-commerce food platform"
+             class="w-full h-full object-cover object-left transform group-hover:scale-105 transition-transform duration-700"/>
+        <div class="absolute inset-0 bg-gradient-to-r from-transparent to-surface opacity-80 hidden lg:block"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-surface to-transparent opacity-80 lg:hidden"></div>
+      </div>
+      <div class="p-8 lg:p-12 w-full lg:w-1/2 flex flex-col justify-center">
+        <span class="font-label-mono text-label-mono text-primary uppercase tracking-widest text-xs mb-3">Featured Project</span>
+        <h3 class="font-headline-lg text-[40px] text-text-high mb-4">Luxe Bites</h3>
+        <p class="font-body-lg text-body-lg text-text-low mb-6">A comprehensive e-commerce platform for gourmet food delivery, implementing robust MVC architecture and scalable database management.</p>
+        <div class="mb-6">
+          <h4 class="font-label-mono text-primary mb-2 uppercase text-xs tracking-wider">Key Features</h4>
+          <p class="font-body-md text-sm text-text-low">User Authentication, Product Browsing, Shopping Cart, Secure Checkout, OTP Password Recovery, Order Tracking, Admin Dashboard.</p>
+        </div>
+        <div class="flex flex-wrap gap-2 mb-8">
+          <span class="px-3 py-1 rounded-full border border-glass-border font-label-mono text-[10px] text-primary">Java</span>
+          <span class="px-3 py-1 rounded-full border border-glass-border font-label-mono text-[10px] text-primary">JSP &amp; Servlets</span>
+          <span class="px-3 py-1 rounded-full border border-glass-border font-label-mono text-[10px] text-primary">JDBC</span>
+          <span class="px-3 py-1 rounded-full border border-glass-border font-label-mono text-[10px] text-primary">MySQL</span>
+          <span class="px-3 py-1 rounded-full border border-glass-border font-label-mono text-[10px] text-primary">MVC</span>
+          <span class="px-3 py-1 rounded-full border border-glass-border font-label-mono text-[10px] text-primary">DAO</span>
+        </div>
+        <div class="flex gap-4">
+          <button class="flex-1 bg-white/5 border border-glass-border hover:bg-white/10 text-text-high py-3 rounded-full font-label-mono text-label-mono transition-colors flex items-center justify-center gap-2">
+            <span class="material-symbols-outlined text-[18px]">code</span> GitHub
+          </button>
+          <button class="flex-1 bg-gradient-to-r from-[#6C63FF] to-[#A855F7] text-white py-3 rounded-full font-label-mono text-label-mono hover:shadow-[0_10px_20px_rgba(0,0,0,0.3)] transition-all magnetic-btn flex items-center justify-center gap-2">
+            <span class="material-symbols-outlined text-[18px]">open_in_new</span> Live Demo
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Project Grid - Real repos from github.com/Shadow69200569 -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+      <!-- Final Year Project: Deepfake Forensics -->
+      <div class="project-hover-trigger glass-panel rounded-2xl overflow-hidden flex flex-col group hover:border-white/30 transition-all duration-500 reveal">
+        <div class="relative h-48 w-full overflow-hidden">
+          <img src="project_images/Deepfake.jpeg" alt="Deepfake Forensics" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+          <div class="absolute inset-0 bg-gradient-to-t from-surface to-transparent opacity-50"></div>
+        </div>
+        <div class="p-6 flex-grow flex flex-col">
+          <div class="flex justify-between items-start mb-2">
+            <h3 class="font-headline-md text-[22px] text-text-high">Deepfake Forensics</h3>
+            <span class="font-label-mono text-[9px] text-primary border border-primary/30 px-2 py-0.5 rounded-full">Final Year</span>
+          </div>
+          <p class="font-body-md text-sm text-text-low mb-4 flex-grow">Forensic framework for detecting deepfake images, AI-generated images, and real images — built as the capstone final-year project.</p>
+          <div class="flex flex-wrap gap-2 mb-5">
+            <span class="px-2 py-0.5 rounded-full border border-glass-border font-label-mono text-[10px] text-primary">Python</span>
+            <span class="px-2 py-0.5 rounded-full border border-glass-border font-label-mono text-[10px] text-primary">Deep Learning</span>
+            <span class="px-2 py-0.5 rounded-full border border-glass-border font-label-mono text-[10px] text-primary">Computer Vision</span>
+          </div>
+          <a href="https://github.com/Shadow69200569/Final-Year-Project" target="_blank" rel="noopener" class="w-full bg-white/5 border border-glass-border hover:bg-white/10 text-text-high py-2.5 rounded-full font-label-mono text-[11px] transition-colors flex items-center justify-center gap-1.5">
+            <span class="material-symbols-outlined text-[15px]">code</span> View on GitHub
+          </a>
+        </div>
+      </div>
+
+      <!-- Online Food Order Processing System -->
+      <div class="project-hover-trigger glass-panel rounded-2xl overflow-hidden flex flex-col group hover:border-white/30 transition-all duration-500 reveal delay-100" data-video="project_videos/Online_Food_Order_Processing_System.mp4">
+        <div class="relative h-48 w-full overflow-hidden">
+          <img src="project_images/Food_Ordering_System.png" alt="Food Order System" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+          <div class="absolute inset-0 bg-gradient-to-t from-surface to-transparent opacity-50"></div>
+        </div>
+        <div class="p-6 flex-grow flex flex-col">
+          <div class="flex justify-between items-start mb-2">
+            <h3 class="font-headline-md text-[22px] text-text-high leading-tight">Food Order System</h3>
+            <span class="font-label-mono text-[9px] text-tertiary border border-tertiary/30 px-2 py-0.5 rounded-full ml-2">Java</span>
+          </div>
+          <p class="font-body-md text-sm text-text-low mb-4 flex-grow mt-1">A robust online food ordering and processing platform built to handle menu management, cart logic, and efficient order fulfillment.</p>
+          <div class="flex flex-wrap gap-2 mb-5">
+            <span class="px-2 py-0.5 rounded-full border border-glass-border font-label-mono text-[10px] text-tertiary">Java</span>
+            <span class="px-2 py-0.5 rounded-full border border-glass-border font-label-mono text-[10px] text-tertiary">Full Stack</span>
+            <span class="px-2 py-0.5 rounded-full border border-glass-border font-label-mono text-[10px] text-tertiary">Web</span>
+          </div>
+          <a href="https://github.com/Shadow69200569/Online_Food_Order_Processing_System" target="_blank" rel="noopener" class="w-full bg-white/5 border border-glass-border hover:bg-white/10 text-text-high py-2.5 rounded-full font-label-mono text-[11px] transition-colors flex items-center justify-center gap-1.5">
+            <span class="material-symbols-outlined text-[15px]">code</span> View on GitHub
+          </a>
+        </div>
+      </div>
+
+      <!-- Endee Vision -->
+      <div class="project-hover-trigger glass-panel rounded-2xl overflow-hidden flex flex-col group hover:border-white/30 transition-all duration-500 reveal delay-200" data-video="project_videos/Endee_Vision.mp4">
+        <div class="relative h-48 w-full overflow-hidden">
+          <img src="project_images/Endee_Vision.png" alt="Endee Vision" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+          <div class="absolute inset-0 bg-gradient-to-t from-surface to-transparent opacity-50"></div>
+        </div>
+        <div class="p-6 flex-grow flex flex-col">
+          <div class="flex justify-between items-start mb-2">
+            <h3 class="font-headline-md text-[22px] text-text-high">Endee Vision</h3>
+            <span class="font-label-mono text-[9px] text-secondary border border-secondary/30 px-2 py-0.5 rounded-full">Vision</span>
+          </div>
+          <p class="font-body-md text-sm text-text-low mb-4 flex-grow">A high-performance vector database and vision project, designed to handle up to 1B vectors on a single node.</p>
+          <div class="flex flex-wrap gap-2 mb-5">
+            <span class="px-2 py-0.5 rounded-full border border-glass-border font-label-mono text-[10px] text-secondary">C++</span>
+            <span class="px-2 py-0.5 rounded-full border border-glass-border font-label-mono text-[10px] text-secondary">Vector DB</span>
+            <span class="px-2 py-0.5 rounded-full border border-glass-border font-label-mono text-[10px] text-secondary">Computer Vision</span>
+          </div>
+          <a href="https://github.com/Shadow69200569/endee" target="_blank" rel="noopener" class="w-full bg-white/5 border border-glass-border hover:bg-white/10 text-text-high py-2.5 rounded-full font-label-mono text-[11px] transition-colors flex items-center justify-center gap-1.5">
+            <span class="material-symbols-outlined text-[15px]">code</span> View on GitHub
+          </a>
+        </div>
+      </div>
+
+
+      <!-- Face Blur AI -->
+      <div class="project-hover-trigger glass-panel rounded-2xl overflow-hidden flex flex-col group hover:border-white/30 transition-all duration-500 reveal delay-200" data-video="project_videos/blurify_AI.mp4">
+        <div class="relative h-48 w-full overflow-hidden">
+          <img src="project_images/Blurify_AI.png" alt="Blurify AI" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+          <div class="absolute inset-0 bg-gradient-to-t from-surface to-transparent opacity-50"></div>
+        </div>
+        <div class="p-6 flex-grow flex flex-col">
+          <div class="flex justify-between items-start mb-2">
+            <h3 class="font-headline-md text-[22px] text-text-high">Blurify AI</h3>
+            <span class="font-label-mono text-[9px] text-secondary border border-secondary/30 px-2 py-0.5 rounded-full">Python</span>
+          </div>
+          <p class="font-body-md text-sm text-text-low mb-4 flex-grow">AI that automatically detects and blurs faces in images and videos for privacy protection using computer vision techniques.</p>
+          <div class="flex flex-wrap gap-2 mb-5">
+            <span class="px-2 py-0.5 rounded-full border border-glass-border font-label-mono text-[10px] text-secondary">Python</span>
+            <span class="px-2 py-0.5 rounded-full border border-glass-border font-label-mono text-[10px] text-secondary">OpenCV</span>
+            <span class="px-2 py-0.5 rounded-full border border-glass-border font-label-mono text-[10px] text-secondary">CV2</span>
+          </div>
+          <a href="https://github.com/Shadow69200569/Face_Blury_AI" target="_blank" rel="noopener" class="w-full bg-white/5 border border-glass-border hover:bg-white/10 text-text-high py-2.5 rounded-full font-label-mono text-[11px] transition-colors flex items-center justify-center gap-1.5">
+            <span class="material-symbols-outlined text-[15px]">code</span> View on GitHub
+          </a>
+        </div>
+      </div>
+
+      <!-- Finance Dashboard -->
+      <div class="project-hover-trigger glass-panel rounded-2xl overflow-hidden flex flex-col group hover:border-white/30 transition-all duration-500 reveal" data-video="project_videos/Finance_Tracker.mp4">
+        <div class="relative h-48 w-full overflow-hidden">
+          <img src="project_images/Finance_Tracker.png" alt="Finance Tracker" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+          <div class="absolute inset-0 bg-gradient-to-t from-surface to-transparent opacity-50"></div>
+        </div>
+        <div class="p-6 flex-grow flex flex-col">
+          <div class="flex justify-between items-start mb-2">
+            <h3 class="font-headline-md text-[22px] text-text-high">Finance Tracker</h3>
+            <span class="font-label-mono text-[9px] text-accent-cyan border border-accent-cyan/30 px-2 py-0.5 rounded-full">HTML</span>
+          </div>
+          <p class="font-body-md text-sm text-text-low mb-4 flex-grow">A responsive financial analytics dashboard with charts, KPI cards, and data visualisation built with pure HTML/CSS/JS.</p>
+          <div class="flex flex-wrap gap-2 mb-5">
+            <span class="px-2 py-0.5 rounded-full border border-glass-border font-label-mono text-[10px] text-accent-cyan">HTML</span>
+            <span class="px-2 py-0.5 rounded-full border border-glass-border font-label-mono text-[10px] text-accent-cyan">CSS</span>
+            <span class="px-2 py-0.5 rounded-full border border-glass-border font-label-mono text-[10px] text-accent-cyan">JavaScript</span>
+          </div>
+          <a href="https://github.com/Shadow69200569/Finance_Dashboard" target="_blank" rel="noopener" class="w-full bg-white/5 border border-glass-border hover:bg-white/10 text-text-high py-2.5 rounded-full font-label-mono text-[11px] transition-colors flex items-center justify-center gap-1.5">
+            <span class="material-symbols-outlined text-[15px]">code</span> View on GitHub
+          </a>
+        </div>
+      </div>
+
+      <!-- Netflix Clone -->
+      <div class="project-hover-trigger glass-panel rounded-2xl overflow-hidden flex flex-col group hover:border-white/30 transition-all duration-500 reveal delay-200" data-video="project_videos/Netflix_Clone.mp4">
+        <div class="relative h-48 w-full overflow-hidden">
+          <img src="project_images/Netflix_Clone.png" alt="Netflix Clone" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+          <div class="absolute inset-0 bg-gradient-to-t from-surface to-transparent opacity-50"></div>
+        </div>
+        <div class="p-6 flex-grow flex flex-col">
+          <div class="flex justify-between items-start mb-2">
+            <h3 class="font-headline-md text-[22px] text-text-high">Netflix Clone</h3>
+            <span class="font-label-mono text-[9px] border px-2 py-0.5 rounded-full" style="color:#E50914;border-color:rgba(229,9,20,0.3);">HTML</span>
+          </div>
+          <p class="font-body-md text-sm text-text-low mb-4 flex-grow">Pixel-perfect front-end clone of Netflix's landing page with responsive design and authentic layout replication.</p>
+          <div class="flex flex-wrap gap-2 mb-5">
+            <span class="px-2 py-0.5 rounded-full border border-glass-border font-label-mono text-[10px] text-text-low">HTML</span>
+            <span class="px-2 py-0.5 rounded-full border border-glass-border font-label-mono text-[10px] text-text-low">CSS</span>
+            <span class="px-2 py-0.5 rounded-full border border-glass-border font-label-mono text-[10px] text-text-low">JavaScript</span>
+          </div>
+          <a href="https://github.com/Shadow69200569/Netflix_Clone" target="_blank" rel="noopener" class="w-full bg-white/5 border border-glass-border hover:bg-white/10 text-text-high py-2.5 rounded-full font-label-mono text-[11px] transition-colors flex items-center justify-center gap-1.5">
+            <span class="material-symbols-outlined text-[15px]">code</span> View on GitHub
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Tech Stack Marquee ── -->
+  <section class="w-full overflow-hidden py-5 bg-surface/30 border-y border-glass-border reveal">
+    <div class="marquee-track flex gap-10 items-center">
+      <!-- Set 1 -->
+      <div class="font-label-mono text-[13px] text-text-low opacity-60 flex items-center gap-2 whitespace-nowrap"><span class="material-symbols-outlined text-[18px] text-primary">terminal</span> SPRING BOOT</div>
+      <div class="font-label-mono text-[13px] text-text-low opacity-60 flex items-center gap-2 whitespace-nowrap"><span class="material-symbols-outlined text-[18px]">integration_instructions</span> JSP &amp; SERVLETS</div>
+      <div class="font-label-mono text-[13px] text-text-low opacity-60 flex items-center gap-2 whitespace-nowrap"><span class="material-symbols-outlined text-[18px]">database</span> JDBC</div>
+      <div class="font-label-mono text-[13px] text-text-low opacity-60 flex items-center gap-2 whitespace-nowrap"><span class="material-symbols-outlined text-[18px]">dns</span> TOMCAT</div>
+      <div class="font-label-mono text-[13px] text-text-low opacity-60 flex items-center gap-2 whitespace-nowrap"><span class="material-symbols-outlined text-[18px]">visibility</span> OPENCV</div>
+      <div class="font-label-mono text-[13px] text-text-low opacity-60 flex items-center gap-2 whitespace-nowrap"><span class="material-symbols-outlined text-[18px]">memory</span> CNN</div>
+      <div class="font-label-mono text-[13px] text-text-low opacity-60 flex items-center gap-2 whitespace-nowrap"><span class="material-symbols-outlined text-[18px]">psychology</span> DEEP LEARNING</div>
+      <div class="font-label-mono text-[13px] text-text-low opacity-60 flex items-center gap-2 whitespace-nowrap"><span class="material-symbols-outlined text-[18px]">scatter_plot</span> VECTOR EMBEDDINGS</div>
+      <!-- Set 2 (duplicate for seamless loop) -->
+      <div class="font-label-mono text-[13px] text-text-low opacity-60 flex items-center gap-2 whitespace-nowrap"><span class="material-symbols-outlined text-[18px] text-primary">terminal</span> SPRING BOOT</div>
+      <div class="font-label-mono text-[13px] text-text-low opacity-60 flex items-center gap-2 whitespace-nowrap"><span class="material-symbols-outlined text-[18px]">integration_instructions</span> JSP &amp; SERVLETS</div>
+      <div class="font-label-mono text-[13px] text-text-low opacity-60 flex items-center gap-2 whitespace-nowrap"><span class="material-symbols-outlined text-[18px]">database</span> JDBC</div>
+      <div class="font-label-mono text-[13px] text-text-low opacity-60 flex items-center gap-2 whitespace-nowrap"><span class="material-symbols-outlined text-[18px]">dns</span> TOMCAT</div>
+      <div class="font-label-mono text-[13px] text-text-low opacity-60 flex items-center gap-2 whitespace-nowrap"><span class="material-symbols-outlined text-[18px]">visibility</span> OPENCV</div>
+      <div class="font-label-mono text-[13px] text-text-low opacity-60 flex items-center gap-2 whitespace-nowrap"><span class="material-symbols-outlined text-[18px]">memory</span> CNN</div>
+      <div class="font-label-mono text-[13px] text-text-low opacity-60 flex items-center gap-2 whitespace-nowrap"><span class="material-symbols-outlined text-[18px]">psychology</span> DEEP LEARNING</div>
+      <div class="font-label-mono text-[13px] text-text-low opacity-60 flex items-center gap-2 whitespace-nowrap"><span class="material-symbols-outlined text-[18px]">scatter_plot</span> VECTOR EMBEDDINGS</div>
+    </div>
+  </section>
+</main>
+
+<!-- ═══════════════════ FOOTER ═══════════════════ -->
+<footer class="w-full bg-background">
+  <div class="h-[1px] w-full" style="background:linear-gradient(to right,transparent,#6C63FF 30%,#A855F7 70%,transparent);"></div>
+  <div class="max-w-7xl mx-auto px-gutter py-10 flex flex-col md:flex-row justify-between items-center gap-6">
+    <span style="font-family:'Hanken Grotesk',sans-serif;font-size:22px;font-weight:700;letter-spacing:-0.04em;color:#FFFFFF;-webkit-text-fill-color:#FFFFFF;">AETHER</span>
+    <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.1em;color:rgba(255,255,255,0.4);">© 2026 SANDEEP. BUILT WITH PRECISION.</span>
+    <div class="flex flex-wrap justify-center gap-6">
+      <a style="font-family:'Space Mono',monospace;font-size:11px;color:rgba(255,255,255,0.5);text-decoration:none;transition:color .3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'" href="https://github.com/Shadow69200569" target="_blank" rel="noopener">GitHub</a>
+      <a style="font-family:'Space Mono',monospace;font-size:11px;color:rgba(255,255,255,0.5);text-decoration:none;transition:color .3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'" href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
+      <a style="font-family:'Space Mono',monospace;font-size:11px;color:rgba(255,255,255,0.5);text-decoration:none;transition:color .3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'" href="github.html">Dashboard</a>
+      <a style="font-family:'Space Mono',monospace;font-size:11px;color:rgba(255,255,255,0.5);text-decoration:none;transition:color .3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'" href="index.html">Home</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════════════ JS ═══════════════════ -->
+<script>
+  // Scroll Reveal
+  function revealOnScroll() {
+    document.querySelectorAll('.reveal').forEach(el => {
+      if (el.getBoundingClientRect().top < window.innerHeight - 100) el.classList.add('active');
+    });
+  }
+  window.addEventListener('scroll', revealOnScroll);
+  revealOnScroll();
+
+  // Magnetic buttons
+  document.querySelectorAll('.magnetic-btn').forEach(btn => {
+    btn.addEventListener('mousemove', (e) => {
+      const rect = btn.getBoundingClientRect();
+      const range = 15;
+      const moveX = ((e.clientX - rect.left - rect.width  / 2) / (rect.width  / 2)) * range;
+      const moveY = ((e.clientY - rect.top  - rect.height / 2) / (rect.height / 2)) * range;
+      btn.style.transform = `translate(${moveX}px, ${moveY}px)`;
+    });
+    btn.addEventListener('mouseleave', () => { btn.style.transform = 'translate(0px, 0px)'; });
+  });
+
+  // Navbar hide / show on scroll
+  let lastScrollTop = 0;
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    const st = window.pageYOffset || document.documentElement.scrollTop;
+    navbar.style.transform = (st > lastScrollTop && st > 100)
+      ? 'translate(-50%, -150%)'
+      : 'translate(-50%, 0)';
+    lastScrollTop = st <= 0 ? 0 : st;
+  }, false);
+
+  // Mobile menu toggle
+  const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+  const mobileMenu    = document.getElementById('mobile-menu');
+  mobileMenuBtn.addEventListener('click', () => {
+    mobileMenu.classList.toggle('hidden');
+    mobileMenu.classList.toggle('flex');
+  });
+  mobileMenu.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      mobileMenu.classList.add('hidden');
+      mobileMenu.classList.remove('flex');
+    });
+  });
+</script>
+
+  <!-- Floating Cursor Preview (Hidden by default) -->
+  <div id="project-preview-container" class="fixed pointer-events-none z-[100] opacity-0 transition-opacity duration-300 flex items-center justify-center top-0 left-0" style="will-change: transform;">
+    <div id="project-preview-card" class="glass-card border border-primary/30 rounded-2xl overflow-hidden shadow-[0_0_40px_rgba(123,97,255,0.4)] relative" style="width: 380px; aspect-ratio: 16/9; transform-style: preserve-3d; will-change: transform;">
+      <video id="project-preview-video" src="" autoplay loop muted playsinline class="w-full h-full object-cover"></video>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const previewContainer = document.getElementById('project-preview-container');
+      const previewVideo = document.getElementById('project-preview-video');
+      const triggers = document.querySelectorAll('.project-hover-trigger');
+      
+      let mouseX = 0, mouseY = 0;
+      let containerX = 0, containerY = 0;
+      let isHovering = false;
+      let animationFrameId = null;
+
+      function lerp(start, end, factor) {
+        return start + (end - start) * factor;
+      }
+
+      function animate() {
+        if (!isHovering) return;
+        containerX = lerp(containerX, mouseX, 0.15);
+        containerY = lerp(containerY, mouseY, 0.15);
+        
+        const tiltX = (mouseX - containerX) * 0.1;
+        const tiltY = (containerY - mouseY) * 0.1;
+
+        previewContainer.style.transform = `translate(${containerX}px, ${containerY}px) translate(-50%, -100%) rotateX(${tiltY}deg) rotateY(${tiltX}deg)`;
+        
+        animationFrameId = requestAnimationFrame(animate);
+      }
+
+      triggers.forEach(trigger => {
+        trigger.addEventListener('mouseenter', (e) => {
+          const videoSrc = trigger.getAttribute('data-video');
+          if (!videoSrc) return; 
+          
+          isHovering = true;
+          previewVideo.src = videoSrc;
+          previewVideo.play().catch(e => console.log('Video autoplay blocked:', e));
+          
+          mouseX = e.clientX;
+          mouseY = e.clientY - 20;
+          containerX = mouseX;
+          containerY = mouseY;
+          
+          previewContainer.style.transform = `translate(${containerX}px, ${containerY}px) translate(-50%, -100%)`;
+          previewContainer.classList.remove('opacity-0');
+          previewContainer.classList.add('opacity-100');
+          
+          animate();
+        });
+
+        trigger.addEventListener('mousemove', (e) => {
+          mouseX = e.clientX;
+          mouseY = e.clientY - 20;
+        });
+
+        trigger.addEventListener('mouseleave', () => {
+          isHovering = false;
+          previewContainer.classList.remove('opacity-100');
+          previewContainer.classList.add('opacity-0');
+          setTimeout(() => {
+            if (!isHovering) {
+               previewVideo.pause();
+               previewVideo.src = '';
+            }
+          }, 300);
+          if (animationFrameId) {
+            cancelAnimationFrame(animationFrameId);
+          }
+        });
+      });
+    });
+  </script>
+
+
+
+<!-- Aether Custom Cursor System -->
+<script src="cursor.js"></script>
+</body>
+</html>
+
+
+
+
+
