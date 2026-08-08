@@ -399,10 +399,7 @@
 
   // LeetCode API Integration — with retry, backoff and sessionStorage cache
   const username       = '08E4aDwjHC';
-  const BASE           = `https://alfa-leetcode-api.onrender.com/${username}`;
-  const profileApi     = BASE;
-  const solvedApi      = `${BASE}/solved`;
-  const submissionsApi = `${BASE}/acSubmission`;
+  const profileApi     = `https://leetcode-api-faisalshohag.vercel.app/${username}`;
   const CACHE_KEY      = 'aether_lc_cache';
   const CACHE_TTL      = 24 * 60 * 60 * 1000; // 1 day
 
@@ -447,12 +444,21 @@
     showLoading('Loading live LeetCode data…');
 
     try {
-      // Fetch sequentially to avoid hammering the free API
-      const profileData     = await fetchWithRetry(profileApi);
-      showLoading('Fetching solve stats…');
-      const solvedData      = await fetchWithRetry(solvedApi);
-      showLoading('Fetching recent submissions…');
-      const subData         = await fetchWithRetry(submissionsApi);
+      // The new API provides everything in a single, fast request
+      const data = await fetchWithRetry(profileApi);
+      
+      const profileData = { ranking: data.ranking };
+      const solvedData = {
+        solvedProblem: data.totalSolved,
+        totalSubmissionNum: data.totalSubmissions,
+        easySolved: data.easySolved,
+        mediumSolved: data.mediumSolved,
+        hardSolved: data.hardSolved
+      };
+      
+      // Filter out compile errors to match the old 'acSubmission' (Accepted) behavior
+      const acSubmissions = (data.recentSubmissions || []).filter(sub => sub.statusDisplay === "Accepted");
+      const subData = { submission: acSubmissions };
 
       // Cache result persistently
       try {
