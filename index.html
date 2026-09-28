@@ -657,7 +657,7 @@
 
       // ── Skills with Simple Icons CDN slugs and official brand colors ──
       const SKILLS = [
-        { name: 'Java',            slug: 'openjdk',        color: '#ED8B00' },
+        { name: 'Java',            slug: 'java',           color: '#5382A1', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg' },
         { name: 'Python',          slug: 'python',         color: '#3776AB' },
         { name: 'Spring Boot',     slug: 'springboot',     color: '#6DB33F' },
         { name: 'JavaScript',      slug: 'javascript',     color: '#F7DF1E' },
@@ -689,9 +689,12 @@
       SKILLS.forEach(s => {
         const img = new Image();
         img.crossOrigin = 'anonymous';
-        // Use the colored CDN format: cdn.simpleicons.org/{slug}/{hexColor}
-        const hexColor = s.color.replace('#', '');
-        img.src = `https://cdn.simpleicons.org/${s.slug}/${hexColor}`;
+        if (s.iconUrl) {
+          img.src = s.iconUrl;
+        } else {
+          const hexColor = s.color.replace('#', '');
+          img.src = `https://cdn.simpleicons.org/${s.slug}/${hexColor}`;
+        }
         img.onload = () => { loadedCount++; };
         img.onerror = () => { loadedCount++; }; // still count so animation starts
         iconImages[s.slug] = img;
