@@ -685,7 +685,10 @@
               previewVideo.style.opacity = '0';
               previewVideo.src = videoSrc;
               previewVideo.load();
-              previewVideo.oncanplay = () => {
+              
+              // onloadeddata fires the moment the very first frame is ready, which is instantly.
+              // oncanplay waits until the browser thinks it has enough buffer to finish, causing huge delays.
+              previewVideo.onloadeddata = () => {
                 if (isHovering && previewVideo.getAttribute('data-loaded') === videoSrc) {
                   loader.style.opacity = '0';
                   previewVideo.style.opacity = '1';
