@@ -625,15 +625,15 @@
       <div class="flex justify-center items-center reveal">
         <div class="relative">
           <canvas id="icon-cloud-canvas" class="rounded-2xl" aria-label="Interactive 3D Icon Cloud" role="img"
-            style="touch-action:pan-y;cursor:grab;width:min(750px, 95vw);height:min(750px, 95vw);"></canvas>
+            style="touch-action:pan-y;cursor:grab;width:min(950px, 98vw);height:min(950px, 98vw);"></canvas>
           <div id="icon-cloud-tooltip"
             style="position:absolute;pointer-events:none;opacity:0;transition:opacity 0.2s ease;
-            font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;
-            color:#fff;background:rgba(10,10,20,0.9);border:1px solid rgba(196,192,255,0.35);
-            padding:5px 14px;border-radius:8px;white-space:nowrap;backdrop-filter:blur(12px);
-            box-shadow:0 4px 20px rgba(0,0,0,0.5);z-index:50;"></div>
+            font-family:'Space Mono',monospace;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;
+            color:#fff;background:rgba(10,10,20,0.92);border:1px solid rgba(196,192,255,0.4);
+            padding:7px 18px;border-radius:10px;white-space:nowrap;backdrop-filter:blur(12px);
+            box-shadow:0 6px 24px rgba(0,0,0,0.6);z-index:50;"></div>
           <!-- Ambient glow -->
-          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:550px;height:550px;border-radius:50%;background:radial-gradient(circle,rgba(108,99,255,0.15) 0%,transparent 70%);filter:blur(60px);pointer-events:none;z-index:-1;"></div>
+          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:750px;height:750px;border-radius:50%;background:radial-gradient(circle,rgba(108,99,255,0.18) 0%,transparent 70%);filter:blur(70px);pointer-events:none;z-index:-1;"></div>
         </div>
       </div>
       <p class="text-center font-label-mono text-[10px] text-text-low uppercase tracking-widest mt-6 reveal">↔ Drag to rotate · Hover for details</p>
@@ -647,7 +647,7 @@
       if (!canvas) return;
       const ctx = canvas.getContext('2d');
       const DPR = window.devicePixelRatio || 1;
-      const SIZE = Math.min(750, window.innerWidth * 0.95);
+      const SIZE = Math.min(950, window.innerWidth * 0.98);
       canvas.style.width  = SIZE + 'px';
       canvas.style.height = SIZE + 'px';
       canvas.width  = SIZE * DPR;
@@ -677,10 +677,10 @@
         { name: 'Bootstrap',       slug: 'bootstrap',      color: '#7952B3' },
       ];
 
-      const RADIUS   = W * 0.38;
+      const RADIUS   = W * 0.39;
       const CX       = W / 2;
       const CY       = H / 2;
-      const ICON_R   = W * 0.062; // Radius of each icon circle
+      const ICON_R   = W * 0.082; // Radius of each icon circle
 
       // Load SVG icons as Image objects
       const iconImages = {};
@@ -734,8 +734,8 @@
           p.x = x; p.y = y; p.z = z;
           p.sx    = CX + x;
           p.sy    = CY + y;
-          p.scale = 0.55 + d * 0.65;
-          p.opacity = 0.18 + d * 0.82;
+          p.scale = 0.65 + d * 0.6;
+          p.opacity = 0.25 + d * 0.75;
         });
       }
 
@@ -753,28 +753,28 @@
           ctx.globalAlpha = isH ? 1 : p.opacity;
 
           // Glow
-          if (p.z > RADIUS * 0.2 || isH) {
+          if (p.z > RADIUS * 0.15 || isH) {
             ctx.shadowColor = p.skill.color;
-            ctx.shadowBlur  = isH ? 28 : 14;
+            ctx.shadowBlur  = isH ? 32 : 16;
           }
 
           // Circle background
           ctx.beginPath();
           ctx.arc(p.sx, p.sy, r, 0, Math.PI * 2);
           ctx.fillStyle = isH
-            ? `rgba(255,255,255,0.14)`
-            : `rgba(255,255,255,${0.03 + p.opacity * 0.05})`;
+            ? `rgba(255,255,255,0.16)`
+            : `rgba(255,255,255,${0.04 + p.opacity * 0.06})`;
           ctx.fill();
           ctx.strokeStyle = isH
             ? p.skill.color
-            : `rgba(255,255,255,${0.06 + p.opacity * 0.1})`;
-          ctx.lineWidth = isH ? 2.5 : 1.2;
+            : `rgba(255,255,255,${0.08 + p.opacity * 0.12})`;
+          ctx.lineWidth = isH ? 3 : 1.5;
           ctx.stroke();
           ctx.shadowBlur = 0;
 
           // Draw the SVG icon image
           if (img && img.complete && img.naturalWidth > 0) {
-            const iconSz = r * 1.3;
+            const iconSz = r * 1.35;
             ctx.drawImage(img, p.sx - iconSz/2, p.sy - iconSz/2, iconSz, iconSz);
           } else {
             // Fallback: draw first 2 letters
