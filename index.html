@@ -625,15 +625,15 @@
       <div class="flex justify-center items-center reveal">
         <div class="relative">
           <canvas id="icon-cloud-canvas" class="rounded-2xl" aria-label="Interactive 3D Icon Cloud" role="img"
-            style="touch-action:pan-y;cursor:grab;width:min(950px, 98vw);height:min(950px, 98vw);"></canvas>
+            style="touch-action:pan-y;cursor:grab;width:min(580px, 88vw);height:min(580px, 88vw);max-width:100%;aspect-ratio:1/1;display:block;"></canvas>
           <div id="icon-cloud-tooltip"
             style="position:absolute;pointer-events:none;opacity:0;transition:opacity 0.2s ease;
-            font-family:'Space Mono',monospace;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;
+            font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;
             color:#fff;background:rgba(10,10,20,0.92);border:1px solid rgba(196,192,255,0.4);
-            padding:7px 18px;border-radius:10px;white-space:nowrap;backdrop-filter:blur(12px);
-            box-shadow:0 6px 24px rgba(0,0,0,0.6);z-index:50;"></div>
+            padding:5px 14px;border-radius:8px;white-space:nowrap;backdrop-filter:blur(12px);
+            box-shadow:0 4px 20px rgba(0,0,0,0.6);z-index:50;"></div>
           <!-- Ambient glow -->
-          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:750px;height:750px;border-radius:50%;background:radial-gradient(circle,rgba(108,99,255,0.18) 0%,transparent 70%);filter:blur(70px);pointer-events:none;z-index:-1;"></div>
+          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:450px;height:450px;border-radius:50%;background:radial-gradient(circle,rgba(108,99,255,0.12) 0%,transparent 70%);filter:blur(60px);pointer-events:none;z-index:-1;"></div>
         </div>
       </div>
       <p class="text-center font-label-mono text-[10px] text-text-low uppercase tracking-widest mt-6 reveal">↔ Drag to rotate · Hover for details</p>
@@ -647,22 +647,20 @@
       if (!canvas) return;
       const ctx = canvas.getContext('2d');
       const DPR = window.devicePixelRatio || 1;
-      const SIZE = Math.min(950, window.innerWidth * 0.98);
-      canvas.style.width  = SIZE + 'px';
-      canvas.style.height = SIZE + 'px';
+      const SIZE = 580;
       canvas.width  = SIZE * DPR;
       canvas.height = SIZE * DPR;
       ctx.scale(DPR, DPR);
       const W = SIZE, H = SIZE;
 
-      // ── Skills with Simple Icons CDN slugs and official brand colors ──
+      // ── Skills with validated official brand icons ──
       const SKILLS = [
         { name: 'Java',            slug: 'java',           color: '#5382A1', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg' },
         { name: 'Python',          slug: 'python',         color: '#3776AB' },
         { name: 'Spring Boot',     slug: 'springboot',     color: '#6DB33F' },
         { name: 'JavaScript',      slug: 'javascript',     color: '#F7DF1E' },
         { name: 'HTML5',           slug: 'html5',          color: '#E34F26' },
-        { name: 'CSS3',            slug: 'css3',           color: '#1572B6' },
+        { name: 'CSS3',            slug: 'css3',           color: '#1572B6', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg' },
         { name: 'MySQL',           slug: 'mysql',          color: '#4479A1' },
         { name: 'Git',             slug: 'git',            color: '#F05032' },
         { name: 'GitHub',          slug: 'github',         color: '#FFFFFF' },
@@ -670,17 +668,17 @@
         { name: 'REST API',        slug: 'fastapi',        color: '#009688' },
         { name: 'Data Structures', slug: 'leetcode',       color: '#FFA116' },
         { name: 'Linux',           slug: 'linux',          color: '#FCC624' },
-        { name: 'VS Code',         slug: 'visualstudiocode', color: '#007ACC' },
+        { name: 'VS Code',         slug: 'visualstudiocode', color: '#007ACC', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg' },
         { name: 'npm',             slug: 'npm',            color: '#CB3837' },
         { name: 'Postman',         slug: 'postman',        color: '#FF6C37' },
         { name: 'Tailwind CSS',    slug: 'tailwindcss',    color: '#06B6D4' },
         { name: 'Bootstrap',       slug: 'bootstrap',      color: '#7952B3' },
       ];
 
-      const RADIUS   = W * 0.39;
+      const RADIUS   = W * 0.38;
       const CX       = W / 2;
       const CY       = H / 2;
-      const ICON_R   = W * 0.082; // Radius of each icon circle
+      const BASE_R   = 27; // Clean, proportional base radius
 
       // Load SVG icons as Image objects
       const iconImages = {};
@@ -696,11 +694,11 @@
           img.src = `https://cdn.simpleicons.org/${s.slug}/${hexColor}`;
         }
         img.onload = () => { loadedCount++; };
-        img.onerror = () => { loadedCount++; }; // still count so animation starts
+        img.onerror = () => { loadedCount++; };
         iconImages[s.slug] = img;
       });
 
-      // Fibonacci sphere distribution
+      // Fibonacci sphere distribution for uniform 3D spacing
       const points = SKILLS.map((skill, i) => {
         const phi   = Math.acos(1 - 2 * (i + 0.5) / SKILLS.length);
         const theta = Math.PI * (1 + Math.sqrt(5)) * i;
@@ -708,7 +706,7 @@
       });
 
       let rotX = 0, rotY = 0;
-      let autoRotX = 0.0015, autoRotY = 0.003;
+      let autoRotX = 0.0012, autoRotY = 0.0028;
       let dragging = false, lastMX = 0, lastMY = 0;
       let velX = 0, velY = 0;
       let hovered = -1;
@@ -734,55 +732,55 @@
           p.x = x; p.y = y; p.z = z;
           p.sx    = CX + x;
           p.sy    = CY + y;
-          p.scale = 0.65 + d * 0.6;
-          p.opacity = 0.25 + d * 0.75;
+          p.scale = 0.48 + d * 0.62;
+          p.opacity = 0.18 + d * 0.82;
         });
       }
 
       function draw() {
         ctx.clearRect(0, 0, W, H);
+        // Sort back-to-front so foreground icons cleanly render on top
         const sorted = [...points].sort((a, b) => a.z - b.z);
 
         sorted.forEach(p => {
           const idx = points.indexOf(p);
           const isH = idx === hovered;
-          const r   = ICON_R * p.scale;
+          const r   = BASE_R * p.scale * (isH ? 1.15 : 1);
           const img = iconImages[p.skill.slug];
+          const d   = (p.z + RADIUS) / (2 * RADIUS);
 
           ctx.save();
           ctx.globalAlpha = isH ? 1 : p.opacity;
 
-          // Glow
-          if (p.z > RADIUS * 0.15 || isH) {
+          // Subtle shadow/glow for front elements
+          if (isH) {
             ctx.shadowColor = p.skill.color;
-            ctx.shadowBlur  = isH ? 32 : 16;
+            ctx.shadowBlur  = 22;
+          } else if (d > 0.65) {
+            ctx.shadowColor = p.skill.color;
+            ctx.shadowBlur  = 10;
           }
 
-          // Circle background
+          // Dark solid glass disc — cleanly occludes elements behind it
           ctx.beginPath();
           ctx.arc(p.sx, p.sy, r, 0, Math.PI * 2);
           ctx.fillStyle = isH
-            ? `rgba(255,255,255,0.16)`
-            : `rgba(255,255,255,${0.04 + p.opacity * 0.06})`;
+            ? 'rgba(28, 25, 42, 0.94)'
+            : `rgba(16, 16, 24, ${0.72 + d * 0.24})`;
           ctx.fill();
+
+          // Refined border
           ctx.strokeStyle = isH
             ? p.skill.color
-            : `rgba(255,255,255,${0.08 + p.opacity * 0.12})`;
-          ctx.lineWidth = isH ? 3 : 1.5;
+            : `rgba(255,255,255,${0.06 + d * 0.1})`;
+          ctx.lineWidth = isH ? 2 : 1;
           ctx.stroke();
           ctx.shadowBlur = 0;
 
-          // Draw the SVG icon image
+          // Draw the SVG icon
           if (img && img.complete && img.naturalWidth > 0) {
-            const iconSz = r * 1.35;
+            const iconSz = r * 1.25;
             ctx.drawImage(img, p.sx - iconSz/2, p.sy - iconSz/2, iconSz, iconSz);
-          } else {
-            // Fallback: draw first 2 letters
-            ctx.fillStyle = p.skill.color;
-            ctx.font = `bold ${Math.round(r * 0.7)}px "Inter", sans-serif`;
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.fillText(p.skill.name.slice(0, 2).toUpperCase(), p.sx, p.sy);
           }
 
           ctx.restore();
@@ -791,9 +789,10 @@
 
       function loop() {
         if (!dragging) {
-          velX *= 0.96; velY *= 0.96;
-          rotX += autoRotX + velX;
-          rotY += autoRotY + velY;
+          velX *= 0.95; velY *= 0.95;
+          const speedMultiplier = hovered >= 0 ? 0.3 : 1;
+          rotX += (autoRotX + velX) * speedMultiplier;
+          rotY += (autoRotY + velY) * speedMultiplier;
         }
         project(); draw();
         requestAnimationFrame(loop);
@@ -822,11 +821,12 @@
         const mx = (e.clientX - rect.left) * (W / rect.width);
         const my = (e.clientY - rect.top)  * (H / rect.height);
         let found = -1;
+        // Search front to back for hovering
         const sorted = [...points].sort((a, b) => b.z - a.z);
         for (const p of sorted) {
-          const r = ICON_R * p.scale;
+          const r = BASE_R * p.scale;
           const dx = mx - p.sx, dy = my - p.sy;
-          if (dx*dx + dy*dy < r*r*1.8) { found = points.indexOf(p); break; }
+          if (dx*dx + dy*dy < r*r*1.5) { found = points.indexOf(p); break; }
         }
         hovered = found;
         if (found >= 0) {
