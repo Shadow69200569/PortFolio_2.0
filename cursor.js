@@ -1,5 +1,5 @@
 /**
- * AETHER PORTFOLIO — Premium Custom Cursor System
+ * SANDEEP PORTFOLIO — Premium Custom Cursor System
  * Version 2.0 | GPU-accelerated | 60 FPS | Per-page themes
  *
  * Pages and their themes:
@@ -118,7 +118,7 @@
 
   // ── 4. Inject styles ───────────────────────────────────────────────────────
   const styleEl = document.createElement('style');
-  styleEl.id = 'aether-cursor-styles';
+  styleEl.id = 'cursor-cursor-styles';
   // Use @layer so our rules are authoritative even inside body-level style blocks
   styleEl.textContent = `
     /* Hide default cursor — injected at end of body to beat any inline <style> blocks */
@@ -129,8 +129,8 @@
     input, textarea, [contenteditable="true"] { cursor: text !important; }
 
     /* Base cursor elements */
-    #aether-cursor-dot,
-    #aether-cursor-ring {
+    #cursor-cursor-dot,
+    #cursor-cursor-ring {
       position: fixed;
       top: 0; left: 0;
       pointer-events: none;
@@ -140,7 +140,7 @@
       backface-visibility: hidden;
     }
 
-    #aether-cursor-dot {
+    #cursor-cursor-dot {
       width: ${T.dotSize}px;
       height: ${T.dotSize}px;
       background: ${T.dotColor};
@@ -151,7 +151,7 @@
                   opacity 0.25s ease;
     }
 
-    #aether-cursor-ring {
+    #cursor-cursor-ring {
       width: ${T.ringSize}px;
       height: ${T.ringSize}px;
       background: ${T.ringColor};
@@ -165,7 +165,7 @@
     }
 
     /* Trail dots */
-    .aether-trail {
+    .cursor-trail {
       position: fixed;
       top: 0; left: 0;
       width: 5px; height: 5px;
@@ -179,20 +179,20 @@
     /* Page-specific ring shapes */
     ${PAGE === 'forge' ? `
     /* Forge: Crosshair lines on the ring */
-    #aether-cursor-ring::before,
-    #aether-cursor-ring::after {
+    #cursor-cursor-ring::before,
+    #cursor-cursor-ring::after {
       content: '';
       position: absolute;
       background: rgba(240, 83, 28, 0.35);
       border-radius: 2px;
       pointer-events: none;
     }
-    #aether-cursor-ring::before {
+    #cursor-cursor-ring::before {
       width: 1px; height: 100%;
       left: 50%; top: 0;
       transform: translateX(-50%);
     }
-    #aether-cursor-ring::after {
+    #cursor-cursor-ring::after {
       height: 1px; width: 100%;
       top: 50%; left: 0;
       transform: translateY(-50%);
@@ -201,11 +201,11 @@
 
     ${PAGE === 'vault' ? `
     /* Vault: rotate the ring slowly */
-    #aether-cursor-ring {
+    #cursor-cursor-ring {
       border-radius: 50%;
-      animation: aether-vault-spin 8s linear infinite;
+      animation: cursor-vault-spin 8s linear infinite;
     }
-    @keyframes aether-vault-spin {
+    @keyframes cursor-vault-spin {
       from { transform: translate(-50%, -50%) rotate(0deg); }
       to   { transform: translate(-50%, -50%) rotate(360deg); }
     }
@@ -213,11 +213,11 @@
 
     ${PAGE === 'code' ? `
     /* Code: square-ish ring with corner accents */
-    #aether-cursor-ring {
+    #cursor-cursor-ring {
       border-radius: 4px;
     }
-    #aether-cursor-ring::before,
-    #aether-cursor-ring::after {
+    #cursor-cursor-ring::before,
+    #cursor-cursor-ring::after {
       content: '';
       position: absolute;
       pointer-events: none;
@@ -226,48 +226,48 @@
 
     ${PAGE === 'solve' ? `
     /* Solve: spinning dashed ring */
-    #aether-cursor-ring {
+    #cursor-cursor-ring {
       border-style: dashed;
       border-width: 1.5px;
-      animation: aether-solve-spin 3s linear infinite;
+      animation: cursor-solve-spin 3s linear infinite;
     }
-    @keyframes aether-solve-spin {
+    @keyframes cursor-solve-spin {
       from { transform: translate(-50%, -50%) rotate(0deg); }
       to   { transform: translate(-50%, -50%) rotate(360deg); }
     }
     ` : ''}
 
     /* Hover state: clicked pulse */
-    @keyframes aether-click-pulse {
+    @keyframes cursor-click-pulse {
       0%   { box-shadow: 0 0 0 0 rgba(${T.glowColor}, 0.7); }
       70%  { box-shadow: 0 0 0 14px rgba(${T.glowColor}, 0); }
       100% { box-shadow: 0 0 0 0 rgba(${T.glowColor}, 0); }
     }
-    .aether-clicking #aether-cursor-ring {
-      animation: aether-click-pulse 0.4s ease-out forwards
-                 ${PAGE === 'vault' ? ', aether-vault-spin 8s linear infinite' : ''}
-                 ${PAGE === 'solve' ? ', aether-solve-spin 3s linear infinite' : ''} !important;
+    .cursor-clicking #cursor-cursor-ring {
+      animation: cursor-click-pulse 0.4s ease-out forwards
+                 ${PAGE === 'vault' ? ', cursor-vault-spin 8s linear infinite' : ''}
+                 ${PAGE === 'solve' ? ', cursor-solve-spin 3s linear infinite' : ''} !important;
     }
 
     /* Text hover: beam / I-bar */
-    .aether-text-hover #aether-cursor-dot {
+    .cursor-text-hover #cursor-cursor-dot {
       width: 2px !important;
       height: ${T.dotSize * 2}px !important;
       border-radius: 1px !important;
       background: rgba(${T.glowColor}, 0.9) !important;
     }
-    .aether-text-hover #aether-cursor-ring {
+    .cursor-text-hover #cursor-cursor-ring {
       opacity: 0.3 !important;
     }
 
     /* Link / button hover state */
-    .aether-interactive-hover #aether-cursor-dot {
+    .cursor-interactive-hover #cursor-cursor-dot {
       width: ${T.dotSize * T.hoverDotScale * 2}px !important;
       height: ${T.dotSize * T.hoverDotScale * 2}px !important;
       background: ${T.hoverDotColor} !important;
       box-shadow: 0 0 18px 4px rgba(${T.glowColor}, 0.8) !important;
     }
-    .aether-interactive-hover #aether-cursor-ring {
+    .cursor-interactive-hover #cursor-cursor-ring {
       width:  ${T.ringSize * T.hoverRingScale}px !important;
       height: ${T.ringSize * T.hoverRingScale}px !important;
       background: ${T.hoverRingColor} !important;
@@ -277,11 +277,11 @@
     }
 
     /* Draggable hover */
-    .aether-drag-hover #aether-cursor-dot {
+    .cursor-drag-hover #cursor-cursor-dot {
       background: rgba(255,255,255,0.9) !important;
       box-shadow: 0 0 12px rgba(255,255,255,0.5) !important;
     }
-    .aether-drag-hover #aether-cursor-ring {
+    .cursor-drag-hover #cursor-cursor-ring {
       width: ${T.ringSize * 1.6}px !important;
       height: ${T.ringSize * 1.6}px !important;
       border-style: dashed !important;
@@ -289,13 +289,13 @@
     }
 
     /* Hidden when outside window */
-    .aether-hidden #aether-cursor-dot,
-    .aether-hidden #aether-cursor-ring {
+    .cursor-hidden #cursor-cursor-dot,
+    .cursor-hidden #cursor-cursor-ring {
       opacity: 0 !important;
     }
 
     /* Particles (hero page) */
-    .aether-particle {
+    .cursor-particle {
       position: fixed;
       pointer-events: none;
       z-index: 2147483645;
@@ -320,7 +320,7 @@
   // in JS-generated elements. CSS !important can't override inline styles, so
   // we use a MutationObserver to strip inline cursor values as they are set.
   function stripInlineCursor(el) {
-    if (el && el.style && el.style.cursor && el.id !== 'aether-cursor-dot' && el.id !== 'aether-cursor-ring') {
+    if (el && el.style && el.style.cursor && el.id !== 'cursor-cursor-dot' && el.id !== 'cursor-cursor-ring') {
       el.style.cursor = '';
     }
   }
@@ -366,8 +366,8 @@
   // ── 5. Create DOM elements ─────────────────────────────────────────────────
   const dot  = document.createElement('div');
   const ring = document.createElement('div');
-  dot.id  = 'aether-cursor-dot';
-  ring.id = 'aether-cursor-ring';
+  dot.id  = 'cursor-cursor-dot';
+  ring.id = 'cursor-cursor-ring';
   document.body.appendChild(ring);
   document.body.appendChild(dot);
 
@@ -375,7 +375,7 @@
   const trails = [];
   for (let i = 0; i < T.trailCount; i++) {
     const t = document.createElement('div');
-    t.className = 'aether-trail';
+    t.className = 'cursor-trail';
     const alpha = 0.45 - i * (0.35 / T.trailCount);
     const size  = 5 - i * (3 / T.trailCount);
     t.style.cssText = `
@@ -443,18 +443,18 @@
       dotX = ringX = mouseX;
       dotY = ringY = mouseY;
       for (const t of trails) { t.x = mouseX; t.y = mouseY; }
-      document.body.classList.remove('aether-hidden');
+      document.body.classList.remove('cursor-hidden');
       isHidden = false;
     }
   }, { passive: true });
 
   document.addEventListener('mouseleave', function () {
-    document.body.classList.add('aether-hidden');
+    document.body.classList.add('cursor-hidden');
     isHidden = true;
   });
 
   document.addEventListener('mouseenter', function () {
-    document.body.classList.remove('aether-hidden');
+    document.body.classList.remove('cursor-hidden');
     isHidden = false;
   });
 
@@ -485,18 +485,18 @@
     }
     if (getClosestMatch(target, DRAG_SEL)) {
       clearHoverStates();
-      document.body.classList.add('aether-drag-hover');
+      document.body.classList.add('cursor-drag-hover');
       return;
     }
     if (getClosestMatch(target, INTERACTIVE_SEL)) {
       clearHoverStates();
-      document.body.classList.add('aether-interactive-hover');
+      document.body.classList.add('cursor-interactive-hover');
       spawnParticles(mouseX, mouseY, 3);
       return;
     }
     if (getClosestMatch(target, TEXT_SEL)) {
       clearHoverStates();
-      document.body.classList.add('aether-text-hover');
+      document.body.classList.add('cursor-text-hover');
       return;
     }
     clearHoverStates();
@@ -504,19 +504,19 @@
 
   function clearHoverStates() {
     document.body.classList.remove(
-      'aether-interactive-hover',
-      'aether-text-hover',
-      'aether-drag-hover'
+      'cursor-interactive-hover',
+      'cursor-text-hover',
+      'cursor-drag-hover'
     );
   }
 
   // ── 10. Click animation ────────────────────────────────────────────────────
   document.addEventListener('mousedown', function () {
-    document.body.classList.add('aether-clicking');
+    document.body.classList.add('cursor-clicking');
     spawnParticles(mouseX, mouseY, PAGE === 'forge' ? 6 : 4);
   });
   document.addEventListener('mouseup', function () {
-    document.body.classList.remove('aether-clicking');
+    document.body.classList.remove('cursor-clicking');
   });
 
   // ── 11. Particle burst system ──────────────────────────────────────────────
@@ -525,7 +525,7 @@
   function getParticle() {
     if (particlePool.length > 0) return particlePool.pop();
     const p = document.createElement('div');
-    p.className = 'aether-particle';
+    p.className = 'cursor-particle';
     document.body.appendChild(p);
     return p;
   }
@@ -537,7 +537,7 @@
 
   function spawnParticles(x, y, count) {
     // Throttle: only on interaction, not text
-    if (document.body.classList.contains('aether-text-hover')) return;
+    if (document.body.classList.contains('cursor-text-hover')) return;
 
     const colors = {
       hero:  ['rgba(196,192,255,0.9)', 'rgba(168,85,247,0.8)', 'rgba(255,255,255,0.7)'],
@@ -604,7 +604,7 @@
   // CODE: Append < > decorators on ring hover text
   if (PAGE === 'code') {
     const codeRingLabel = document.createElement('div');
-    codeRingLabel.id = 'aether-code-label';
+    codeRingLabel.id = 'cursor-code-label';
     codeRingLabel.style.cssText = `
       position: fixed;
       top: 0; left: 0;
@@ -631,7 +631,7 @@
     }, { passive: true });
 
     // Sync label to ring position inside the RAF
-    const origAnimate = window.__aetherRaf;
+    const origAnimate = window.__cursorRaf;
     let labelX = -200, labelY = -200;
     function animateCodeLabel() {
       labelX = lerp(labelX, mouseX, 0.18);
@@ -647,7 +647,7 @@
     // The spinning dashed ring is handled by CSS; no extra DOM needed.
     // Add a second inner solid ring for depth:
     const innerRing = document.createElement('div');
-    innerRing.id = 'aether-solve-inner';
+    innerRing.id = 'cursor-solve-inner';
     innerRing.style.cssText = `
       position: fixed;
       top: 0; left: 0;
@@ -719,7 +719,7 @@
   // HERO: Ambient orb ripple on interactive hover
   if (PAGE === 'hero') {
     const heroOrb = document.createElement('div');
-    heroOrb.id = 'aether-hero-orb';
+    heroOrb.id = 'cursor-hero-orb';
     heroOrb.style.cssText = `
       position: fixed;
       top: 0; left: 0;
@@ -750,6 +750,6 @@
   }
 
   // ── 14. Hide initially ─────────────────────────────────────────────────────
-  document.body.classList.add('aether-hidden');
+  document.body.classList.add('cursor-hidden');
 
 })();

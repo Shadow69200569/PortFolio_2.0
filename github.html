@@ -195,7 +195,7 @@
 
 <!-- ═══════ NAV ═══════ -->
 <nav id="navbar" class="fixed top-4 left-1/2 -translate-x-1/2 w-[90%] max-w-7xl rounded-full bg-surface/80 backdrop-blur-xl border border-glass-border shadow-2xl flex justify-between items-center px-8 py-3 z-50 transition-transform duration-300">
-  <a class="font-headline-md tracking-tighter text-text-high text-[24px] font-bold" href="index.html">AETHER</a>
+  <a class="font-headline-md tracking-tighter text-text-high text-[24px] font-bold" href="index.html">SANDEEP</a>
   <div class="hidden md:flex items-center gap-6">
     <a class="text-text-low hover:text-text-high hover:bg-white/5 transition-all px-4 py-2 rounded-full text-sm" href="index.html#hero">Home</a>
     <a class="text-text-low hover:text-text-high hover:bg-white/5 transition-all px-4 py-2 rounded-full text-sm" href="index.html#about">About</a>
@@ -379,7 +379,7 @@
 <footer class="w-full bg-background mt-10">
   <div class="h-[1px] w-full" style="background:linear-gradient(to right,transparent,#6C63FF 30%,#A855F7 70%,transparent);"></div>
   <div class="max-w-7xl mx-auto px-gutter py-10 flex flex-col md:flex-row justify-between items-center gap-6">
-    <span style="font-family:'Hanken Grotesk',sans-serif;font-size:22px;font-weight:700;letter-spacing:-0.04em;color:#FFFFFF;-webkit-text-fill-color:#FFFFFF;">AETHER</span>
+    <span style="font-family:'Hanken Grotesk',sans-serif;font-size:22px;font-weight:700;letter-spacing:-0.04em;color:#FFFFFF;-webkit-text-fill-color:#FFFFFF;">SANDEEP</span>
     <span class="font-label-mono text-[10px] tracking-widest text-text-low opacity-70">© 2026 SANDEEP. BUILT WITH PRECISION.</span>
     <div class="flex flex-wrap justify-center gap-6">
       <a class="font-label-mono text-[11px] text-text-low hover:text-text-high transition-colors duration-300" href="https://github.com/Shadow69200569" target="_blank" rel="noopener">GitHub</a>
@@ -463,7 +463,7 @@
   }
 
   // ── Main fetch — with sessionStorage cache and rate-limit handling ──
-  const GH_CACHE_KEY = 'aether_gh_cache';
+  const GH_CACHE_KEY = 'sandeep_gh_cache';
   const GH_CACHE_TTL = 24 * 60 * 60 * 1000; // 1 day
 
   async function ghFetch(url) {
@@ -746,7 +746,7 @@
 
     // Build a map of date → contribution count from real events
     let dateMap = {};
-    const HEATMAP_CACHE_KEY = 'aether_gh_heatmap_cache';
+    const HEATMAP_CACHE_KEY = 'sandeep_gh_heatmap_cache';
     const HEATMAP_CACHE_TTL = 24 * 60 * 60 * 1000; // 1 day
 
     try {
@@ -887,7 +887,7 @@
 </script>
 
 
-<!-- Aether Custom Cursor System -->
+<!-- Custom Cursor System -->
 <script src="cursor.js"></script>
 </body>
 </html>
